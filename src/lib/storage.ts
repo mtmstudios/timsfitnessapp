@@ -62,6 +62,15 @@ export function isCompleted(day: string) {
   return !!s.completed[`${getWeekKey()}-${day}`];
 }
 
+/** Nur die in der AKTUELLEN Woche erledigten Tage — alte Wochen bleiben gespeichert, zählen aber nicht mit. */
+export function getCompletedDaysThisWeek(): string[] {
+  const s = loadState();
+  const wk = `${getWeekKey()}-`;
+  return Object.keys(s.completed)
+    .filter((k) => k.startsWith(wk))
+    .map((k) => k.slice(wk.length));
+}
+
 export function addLog(log: SessionLog) {
   const s = loadState();
   s.logs.push(log);

@@ -91,7 +91,7 @@ export const workouts: Record<string, Workout> = {
       },
     ],
   },
-  "dynamisch": {
+  dynamisch: {
     id: "dynamisch",
     title: "Dynamisches Workout",
     subtitle: "Athletik & Puls",
@@ -148,7 +148,7 @@ export const workouts: Record<string, Workout> = {
       },
     ],
   },
-  "regeneration": {
+  regeneration: {
     id: "regeneration",
     title: "Regeneration & Mobility",
     subtitle: "Erholung",
@@ -261,7 +261,15 @@ export const workouts: Record<string, Workout> = {
 };
 
 export const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"] as const;
-export const weekdaysLong = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"] as const;
+export const weekdaysLong = [
+  "Montag",
+  "Dienstag",
+  "Mittwoch",
+  "Donnerstag",
+  "Freitag",
+  "Samstag",
+  "Sonntag",
+] as const;
 
 export const weeklyPlan: { day: string; workoutId: keyof typeof workouts; optional?: boolean }[] = [
   { day: "Mo", workoutId: "ganzkoerper-a" },

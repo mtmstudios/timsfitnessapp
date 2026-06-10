@@ -4,13 +4,16 @@ import { Flame, ChevronRight, CheckCircle2, Calendar as CalendarIcon } from "luc
 import { AppShell } from "@/components/AppShell";
 import { CategoryBadge } from "@/components/CategoryBadge";
 import { weeklyPlan, weekdaysLong, getWorkout, motivationalQuotes } from "@/data/workouts";
-import { loadState, getTodayWeekdayIndex } from "@/lib/storage";
+import { getCompletedDaysThisWeek, getTodayWeekdayIndex } from "@/lib/storage";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Atlas — Dein Trainingsplan" },
-      { name: "description", content: "Persönlicher Trainingsplan: Kraft, Lauf, Athletik & Mobility." },
+      {
+        name: "description",
+        content: "Persönlicher Trainingsplan: Kraft, Lauf, Athletik & Mobility.",
+      },
     ],
   }),
   component: Dashboard,
@@ -23,9 +26,7 @@ function Dashboard() {
 
   useEffect(() => {
     setToday(getTodayWeekdayIndex());
-    const s = loadState();
-    const week = Object.keys(s.completed).map((k) => k.split("-").pop()!);
-    setDone(new Set(week));
+    setDone(new Set(getCompletedDaysThisWeek()));
     setQuote(motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]);
   }, []);
 
@@ -54,7 +55,9 @@ function Dashboard() {
           <div className="flex items-start justify-between gap-4">
             <div>
               <CategoryBadge category={todayWorkout.category} />
-              <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">{todayWorkout.title}</h2>
+              <h2 className="mt-3 font-display text-2xl font-bold md:text-3xl">
+                {todayWorkout.title}
+              </h2>
               <p className="mt-1 text-sm text-muted-foreground">{todayWorkout.goal}</p>
               <div className="mt-4 flex flex-wrap gap-3 text-sm text-muted-foreground">
                 <span>⏱ {todayWorkout.duration}</span>
@@ -81,7 +84,9 @@ function Dashboard() {
         <section>
           <div className="mb-3 flex items-center justify-between">
             <h3 className="font-display text-lg font-semibold">Diese Woche</h3>
-            <Link to="/plan" className="text-sm text-primary">Alle Tage</Link>
+            <Link to="/plan" className="text-sm text-primary">
+              Alle Tage
+            </Link>
           </div>
           <div className="grid grid-cols-7 gap-2">
             {weeklyPlan.map((d, i) => {
@@ -99,10 +104,14 @@ function Dashboard() {
                       : "border-border bg-card hover:border-muted-foreground/40"
                   }`}
                 >
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{d.day}</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    {d.day}
+                  </span>
                   <span
                     className="h-2 w-2 rounded-full"
-                    style={{ backgroundColor: `var(--cat-${w.category === "core" ? "mobility" : w.category === "cardio" ? "run" : w.category})` }}
+                    style={{
+                      backgroundColor: `var(--cat-${w.category === "core" ? "mobility" : w.category === "cardio" ? "run" : w.category})`,
+                    }}
                   />
                   {isDone ? (
                     <CheckCircle2 className="h-3 w-3 text-primary" />
@@ -132,7 +141,9 @@ function Dashboard() {
                 <span className="text-xs text-muted-foreground">Morgen</span>
               </div>
               <p className="mt-1 truncate font-semibold">{tomorrowWorkout.title}</p>
-              <p className="text-xs text-muted-foreground">{tomorrowWorkout.duration} · {tomorrowWorkout.goal}</p>
+              <p className="text-xs text-muted-foreground">
+                {tomorrowWorkout.duration} · {tomorrowWorkout.goal}
+              </p>
             </div>
             <ChevronRight className="h-5 w-5 text-muted-foreground" />
           </Link>

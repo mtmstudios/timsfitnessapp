@@ -1,8 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { LineChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import {
+  LineChart,
+  Line,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+} from "recharts";
 import { AppShell } from "@/components/AppShell";
-import { loadState } from "@/lib/storage";
+import { getCompletedDaysThisWeek, loadState } from "@/lib/storage";
 import { weeklyPlan, getWorkout } from "@/data/workouts";
 
 export const Route = createFileRoute("/progress")({
@@ -21,12 +29,18 @@ const mockData = [
 
 function Progress() {
   const [state, setState] = useState(() => loadState());
-  useEffect(() => { setState(loadState()); }, []);
+  useEffect(() => {
+    setState(loadState());
+  }, []);
 
-  const doneDays = Object.keys(state.completed).map((k) => k.split("-").pop()!);
+  const doneDays = getCompletedDaysThisWeek();
   const sessionsThisWeek = doneDays.length;
-  const runsThisWeek = weeklyPlan.filter((p) => doneDays.includes(p.day) && getWorkout(p.workoutId).category === "cardio").length;
-  const strengthThisWeek = weeklyPlan.filter((p) => doneDays.includes(p.day) && getWorkout(p.workoutId).category === "strength").length;
+  const runsThisWeek = weeklyPlan.filter(
+    (p) => doneDays.includes(p.day) && getWorkout(p.workoutId).category === "cardio",
+  ).length;
+  const strengthThisWeek = weeklyPlan.filter(
+    (p) => doneDays.includes(p.day) && getWorkout(p.workoutId).category === "strength",
+  ).length;
 
   return (
     <AppShell>
@@ -50,38 +64,72 @@ function Progress() {
               <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" />
               <XAxis dataKey="week" stroke="var(--muted-foreground)" fontSize={12} />
               <YAxis stroke="var(--muted-foreground)" fontSize={12} />
-              <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12 }} />
-              <Line type="monotone" dataKey="sessions" stroke="var(--primary)" strokeWidth={3} dot={{ r: 4 }} />
-              <Line type="monotone" dataKey="runs" stroke="var(--cat-run)" strokeWidth={2} dot={{ r: 3 }} />
+              <Tooltip
+                contentStyle={{
+                  background: "var(--card)",
+                  border: "1px solid var(--border)",
+                  borderRadius: 12,
+                }}
+              />
+              <Line
+                type="monotone"
+                dataKey="sessions"
+                stroke="var(--primary)"
+                strokeWidth={3}
+                dot={{ r: 4 }}
+              />
+              <Line
+                type="monotone"
+                dataKey="runs"
+                stroke="var(--cat-run)"
+                strokeWidth={2}
+                dot={{ r: 3 }}
+              />
             </LineChart>
           </ResponsiveContainer>
         </div>
-        <p className="mt-2 text-xs text-muted-foreground">Beispiel-Trend. Mit jedem abgeschlossenen Training wachsen deine Daten.</p>
+        <p className="mt-2 text-xs text-muted-foreground">
+          Beispiel-Trend. Mit jedem abgeschlossenen Training wachsen deine Daten.
+        </p>
       </section>
 
       <section className="mt-6 rounded-2xl border border-border bg-card p-4">
         <h2 className="font-display text-lg font-bold">Letzte Sessions</h2>
         {state.logs.length === 0 ? (
-          <p className="mt-2 text-sm text-muted-foreground">Noch keine Sessions geloggt. Starte dein erstes Training.</p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Noch keine Sessions geloggt. Starte dein erstes Training.
+          </p>
         ) : (
           <ul className="mt-3 space-y-2">
-            {state.logs.slice(-5).reverse().map((l, i) => (
-              <li key={i} className="rounded-xl border border-border p-3 text-sm">
-                <div className="flex justify-between">
-                  <span className="font-semibold">{getWorkout(l.workoutId)?.title ?? l.workoutId}</span>
-                  <span className="text-muted-foreground">{new Date(l.date).toLocaleDateString("de-DE")}</span>
-                </div>
-                <div className="mt-1 text-xs text-muted-foreground">RPE {l.rpe} · Energie {l.energy}</div>
-                {l.note && <p className="mt-1 text-xs">{l.note}</p>}
-              </li>
-            ))}
+            {state.logs
+              .slice(-5)
+              .reverse()
+              .map((l, i) => (
+                <li key={i} className="rounded-xl border border-border p-3 text-sm">
+                  <div className="flex justify-between">
+                    <span className="font-semibold">
+                      {getWorkout(l.workoutId)?.title ?? l.workoutId}
+                    </span>
+                    <span className="text-muted-foreground">
+                      {new Date(l.date).toLocaleDateString("de-DE")}
+                    </span>
+                  </div>
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    RPE {l.rpe} · Energie {l.energy}
+                  </div>
+                  {l.note && <p className="mt-1 text-xs">{l.note}</p>}
+                </li>
+              ))}
           </ul>
         )}
       </section>
 
       <section className="mt-6 rounded-2xl border border-border bg-card p-4">
         <h2 className="font-display text-lg font-bold">Erinnerung</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Nicht jedes Training muss dich zerstören. Die meisten Einheiten bei 6–8/10. Konstanz baut den Körper, den du willst.</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Nicht jedes Training muss dich zerstören. Die meisten Einheiten bei 6–8/10. Konstanz baut
+          den Körper, den du willst.
+        </p>
       </section>
     </AppShell>
   );

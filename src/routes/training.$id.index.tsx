@@ -7,7 +7,9 @@ import { getWorkout } from "@/data/workouts";
 import { getExercise } from "@/data/exercises";
 
 export const Route = createFileRoute("/training/$id/")({
-  head: ({ params }) => ({ meta: [{ title: `${getWorkout(params.id)?.title ?? "Training"} — Atlas` }] }),
+  head: ({ params }) => ({
+    meta: [{ title: `${getWorkout(params.id)?.title ?? "Training"} — Atlas` }],
+  }),
   component: TrainingDetail,
   notFoundComponent: () => (
     <AppShell>
@@ -23,16 +25,24 @@ function TrainingDetail() {
 
   return (
     <AppShell>
-      <Link to="/plan" className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground">
+      <Link
+        to="/plan"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground"
+      >
         <ChevronLeft className="h-4 w-4" /> Wochenplan
       </Link>
 
-      <header className="rounded-3xl border border-border bg-card p-6" style={{ backgroundImage: "var(--gradient-hero)" }}>
+      <header
+        className="rounded-3xl border border-border bg-card p-6"
+        style={{ backgroundImage: "var(--gradient-hero)" }}
+      >
         <CategoryBadge category={w.category} />
         <h1 className="mt-2 font-display text-3xl font-bold">{w.title}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{w.goal}</p>
         <div className="mt-4 flex flex-wrap gap-4 text-sm">
-          <span className="inline-flex items-center gap-1"><Clock className="h-4 w-4 text-muted-foreground" /> {w.duration}</span>
+          <span className="inline-flex items-center gap-1">
+            <Clock className="h-4 w-4 text-muted-foreground" /> {w.duration}
+          </span>
           <span>🔥 Intensität {w.intensity}</span>
         </div>
         <Link
@@ -49,7 +59,9 @@ function TrainingDetail() {
           <section key={bi}>
             <div className="mb-3 flex items-baseline justify-between">
               <h2 className="font-display text-xl font-bold">{block.title}</h2>
-              {block.rounds && <span className="text-xs text-muted-foreground">{block.rounds} Runden</span>}
+              {block.rounds && (
+                <span className="text-xs text-muted-foreground">{block.rounds} Runden</span>
+              )}
             </div>
             {block.description && (
               <p className="mb-3 text-sm text-muted-foreground">{block.description}</p>
@@ -76,7 +88,9 @@ function TrainingDetail() {
                           item.reps && `${item.reps} Wdh`,
                           item.duration,
                           item.rest && `Pause ${item.rest}`,
-                        ].filter(Boolean).join(" · ")}
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
                       </p>
                     </div>
                   </Link>
@@ -87,7 +101,10 @@ function TrainingDetail() {
         ))}
 
         {w.category === "cardio" && (
-          <Link to="/run" className="block rounded-2xl border border-border bg-card p-4 text-center font-semibold text-primary">
+          <Link
+            to="/run"
+            className="block rounded-2xl border border-border bg-card p-4 text-center font-semibold text-primary"
+          >
             Lauf-Timer öffnen →
           </Link>
         )}

@@ -3,12 +3,18 @@ import { ChevronLeft } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { CategoryBadge } from "@/components/CategoryBadge";
 import { ExerciseAnimation } from "@/components/ExerciseAnimation";
-import { getExercise } from "@/data/exercises";
+import { findExerciseByName, getExercise } from "@/data/exercises";
 
 export const Route = createFileRoute("/exercises/$id")({
-  head: ({ params }) => ({ meta: [{ title: `${getExercise(params.id)?.name ?? "Übung"} — Atlas` }] }),
+  head: ({ params }) => ({
+    meta: [{ title: `${getExercise(params.id)?.name ?? "Übung"} — Atlas` }],
+  }),
   component: ExerciseDetail,
-  notFoundComponent: () => <AppShell><p>Übung nicht gefunden.</p></AppShell>,
+  notFoundComponent: () => (
+    <AppShell>
+      <p>Übung nicht gefunden.</p>
+    </AppShell>
+  ),
 });
 
 function ExerciseDetail() {
@@ -18,11 +24,17 @@ function ExerciseDetail() {
 
   return (
     <AppShell>
-      <Link to="/exercises" className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground">
+      <Link
+        to="/exercises"
+        className="mb-4 inline-flex items-center gap-1 text-sm text-muted-foreground"
+      >
         <ChevronLeft className="h-4 w-4" /> Bibliothek
       </Link>
 
-      <div className="grid place-items-center rounded-3xl border border-border bg-card py-8" style={{ backgroundImage: "var(--gradient-hero)" }}>
+      <div
+        className="grid place-items-center rounded-3xl border border-border bg-card py-8"
+        style={{ backgroundImage: "var(--gradient-hero)" }}
+      >
         <ExerciseAnimation type={ex.animation} size={240} color="var(--primary)" />
       </div>
 
@@ -41,7 +53,9 @@ function ExerciseDetail() {
         <ol className="mt-2 space-y-2 text-sm">
           {ex.execution.map((s, i) => (
             <li key={i} className="flex gap-3 rounded-xl border border-border bg-card p-3">
-              <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-primary text-xs font-bold text-primary-foreground">{i + 1}</span>
+              <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                {i + 1}
+              </span>
               <span>{s}</span>
             </li>
           ))}
@@ -52,7 +66,9 @@ function ExerciseDetail() {
         <section className="mt-6">
           <h2 className="font-display text-lg font-bold">Häufige Fehler</h2>
           <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
-            {ex.mistakes.map((m, i) => <li key={i}>✕ {m}</li>)}
+            {ex.mistakes.map((m, i) => (
+              <li key={i}>✕ {m}</li>
+            ))}
           </ul>
         </section>
       )}
@@ -61,7 +77,9 @@ function ExerciseDetail() {
         <section className="mt-6">
           <h2 className="font-display text-lg font-bold">Tipps</h2>
           <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
-            {ex.tips.map((m, i) => <li key={i}>✓ {m}</li>)}
+            {ex.tips.map((m, i) => (
+              <li key={i}>✓ {m}</li>
+            ))}
           </ul>
         </section>
       )}
@@ -71,9 +89,23 @@ function ExerciseDetail() {
           <h2 className="font-display text-lg font-bold">Alternativen</h2>
           <p className="mt-1 text-sm text-muted-foreground">Falls Gerät besetzt oder ungeeignet:</p>
           <div className="mt-2 flex flex-wrap gap-2">
-            {ex.alternatives.map((a) => (
-              <span key={a} className="rounded-full bg-secondary px-3 py-1 text-xs">{a}</span>
-            ))}
+            {ex.alternatives.map((a) => {
+              const alt = findExerciseByName(a);
+              return alt ? (
+                <Link
+                  key={a}
+                  to="/exercises/$id"
+                  params={{ id: alt.id }}
+                  className="rounded-full bg-secondary px-3 py-1 text-xs text-primary transition hover:bg-primary/15"
+                >
+                  {a} →
+                </Link>
+              ) : (
+                <span key={a} className="rounded-full bg-secondary px-3 py-1 text-xs">
+                  {a}
+                </span>
+              );
+            })}
           </div>
         </section>
       )}

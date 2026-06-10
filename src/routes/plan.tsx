@@ -4,7 +4,7 @@ import { ChevronRight, CheckCircle2, Circle } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { CategoryBadge } from "@/components/CategoryBadge";
 import { weeklyPlan, weekdaysLong, getWorkout } from "@/data/workouts";
-import { loadState, markCompleted, unmarkCompleted } from "@/lib/storage";
+import { getCompletedDaysThisWeek, markCompleted, unmarkCompleted } from "@/lib/storage";
 
 export const Route = createFileRoute("/plan")({
   head: () => ({ meta: [{ title: "Wochenplan — Atlas" }] }),
@@ -14,15 +14,18 @@ export const Route = createFileRoute("/plan")({
 function Plan() {
   const [done, setDone] = useState<Set<string>>(new Set());
   useEffect(() => {
-    const s = loadState();
-    setDone(new Set(Object.keys(s.completed).map((k) => k.split("-").pop()!)));
+    setDone(new Set(getCompletedDaysThisWeek()));
   }, []);
 
   function toggle(day: string, workoutId: string) {
-    if (done.has(day)) { unmarkCompleted(day); }
-    else { markCompleted(day, workoutId); }
+    if (done.has(day)) {
+      unmarkCompleted(day);
+    } else {
+      markCompleted(day, workoutId);
+    }
     const next = new Set(done);
-    if (done.has(day)) next.delete(day); else next.add(day);
+    if (done.has(day)) next.delete(day);
+    else next.add(day);
     setDone(next);
   }
 
@@ -30,7 +33,9 @@ function Plan() {
     <AppShell>
       <header className="mb-6">
         <h1 className="font-display text-3xl font-bold">Wochenplan</h1>
-        <p className="mt-1 text-sm text-muted-foreground">2× Kraft · 2× Lauf · 1× Athletik · Mobility</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          2× Kraft · 2× Lauf · 1× Athletik · Mobility
+        </p>
       </header>
       <div className="space-y-3">
         {weeklyPlan.map((entry, i) => {
@@ -41,9 +46,13 @@ function Plan() {
               <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{weekdaysLong[i]}</span>
+                    <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                      {weekdaysLong[i]}
+                    </span>
                     {entry.optional && (
-                      <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] text-muted-foreground">optional</span>
+                      <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] text-muted-foreground">
+                        optional
+                      </span>
                     )}
                   </div>
                   <h3 className="mt-1 truncate font-display text-lg font-bold">{w.title}</h3>
@@ -59,9 +68,11 @@ function Plan() {
                   aria-label={isDone ? "Erledigt zurücksetzen" : "Als erledigt markieren"}
                   className="grid h-10 w-10 shrink-0 place-items-center rounded-full"
                 >
-                  {isDone
-                    ? <CheckCircle2 className="h-7 w-7 text-primary" />
-                    : <Circle className="h-7 w-7 text-muted-foreground" />}
+                  {isDone ? (
+                    <CheckCircle2 className="h-7 w-7 text-primary" />
+                  ) : (
+                    <Circle className="h-7 w-7 text-muted-foreground" />
+                  )}
                 </button>
               </div>
               <Link

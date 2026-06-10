@@ -21,19 +21,19 @@ function Run() {
           { label: "Auslaufen", seconds: 5 * 60 },
         ]
       : mode === "intervals"
-      ? [
-          { label: "Einlaufen", seconds: 10 * 60 },
-          ...Array.from({ length: 6 }, (_, i) => [
-            { label: `Schnell ${i + 1}/6`, seconds: 60 },
-            { label: `Locker traben`, seconds: 120 },
-          ]).flat(),
-          { label: "Auslaufen", seconds: 10 * 60 },
-        ]
-      : [
-          { label: "Einlaufen", seconds: 5 * 60 },
-          { label: "Lang locker", seconds: 45 * 60 },
-          { label: "Auslaufen", seconds: 5 * 60 },
-        ];
+        ? [
+            { label: "Einlaufen", seconds: 10 * 60 },
+            ...Array.from({ length: 6 }, (_, i) => [
+              { label: `Schnell ${i + 1}/6`, seconds: 60 },
+              { label: `Locker traben`, seconds: 120 },
+            ]).flat(),
+            { label: "Auslaufen", seconds: 10 * 60 },
+          ]
+        : [
+            { label: "Einlaufen", seconds: 5 * 60 },
+            { label: "Lang locker", seconds: 45 * 60 },
+            { label: "Auslaufen", seconds: 5 * 60 },
+          ];
 
   return (
     <AppShell>
@@ -43,7 +43,13 @@ function Run() {
       </header>
 
       <div className="mb-5 grid grid-cols-3 gap-2">
-        {([["easy", "Locker"], ["intervals", "Intervalle"], ["long", "Lang"]] as const).map(([k, l]) => (
+        {(
+          [
+            ["easy", "Locker"],
+            ["intervals", "Intervalle"],
+            ["long", "Lang"],
+          ] as const
+        ).map(([k, l]) => (
           <button
             key={k}
             onClick={() => setMode(k)}
@@ -59,7 +65,8 @@ function Run() {
       <div className="mt-6 rounded-2xl border border-border bg-card p-4 text-sm text-muted-foreground">
         {mode === "easy" && "Sprechtempo. Atmung leicht. Nicht auf Pace geiern."}
         {mode === "intervals" && "Schnell heißt zügig, nicht Sprint. Sauberes Tempo halten."}
-        {mode === "long" && "Zeit auf den Beinen. Tempo so wählen, dass kurze Sätze noch möglich sind."}
+        {mode === "long" &&
+          "Zeit auf den Beinen. Tempo so wählen, dass kurze Sätze noch möglich sind."}
       </div>
     </AppShell>
   );

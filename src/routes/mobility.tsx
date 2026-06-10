@@ -32,14 +32,25 @@ function Section({ workout, title }: { workout: ReturnType<typeof getWorkout>; t
     <section className="rounded-3xl border border-border bg-card p-5">
       <div className="flex items-baseline justify-between">
         <h2 className="font-display text-xl font-bold">{title}</h2>
-        <Link to="/training/$id" params={{ id: workout.id }} className="text-sm font-semibold text-primary">Starten →</Link>
+        <Link
+          to="/training/$id"
+          params={{ id: workout.id }}
+          className="text-sm font-semibold text-primary"
+        >
+          Starten →
+        </Link>
       </div>
       <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3">
         {workout.blocks[0].items.map((it, i) => {
           const ex = getExercise(it.exerciseId);
           if (!ex) return null;
           return (
-            <Link key={i} to="/exercises/$id" params={{ id: ex.id }} className="rounded-2xl border border-border bg-background p-3 text-center">
+            <Link
+              key={i}
+              to="/exercises/$id"
+              params={{ id: ex.id }}
+              className="rounded-2xl border border-border bg-background p-3 text-center"
+            >
               <div className="grid place-items-center text-[color:var(--cat-mobility)]">
                 <ExerciseAnimation type={ex.animation} size={90} />
               </div>

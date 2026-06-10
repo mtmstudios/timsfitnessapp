@@ -17,16 +17,17 @@ function Lib() {
   const [q, setQ] = useState("");
   const [cat, setCat] = useState<ExerciseCategory | "all">("all");
 
-  const filtered = exercises.filter((e) =>
-    (cat === "all" || e.category === cat) &&
-    e.name.toLowerCase().includes(q.toLowerCase())
+  const filtered = exercises.filter(
+    (e) => (cat === "all" || e.category === cat) && e.name.toLowerCase().includes(q.toLowerCase()),
   );
 
   return (
     <AppShell>
       <header className="mb-5">
         <h1 className="font-display text-3xl font-bold">Übungen</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{exercises.length} Übungen mit Animation</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          {exercises.length} Übungen mit Animation
+        </p>
       </header>
 
       <div className="sticky top-0 z-10 -mx-4 bg-background px-4 pb-3 pt-2 md:mx-0 md:px-0">
@@ -40,9 +41,13 @@ function Lib() {
           />
         </div>
         <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
-          <Chip active={cat === "all"} onClick={() => setCat("all")}>Alle</Chip>
+          <Chip active={cat === "all"} onClick={() => setCat("all")}>
+            Alle
+          </Chip>
           {cats.map((c) => (
-            <Chip key={c} active={cat === c} onClick={() => setCat(c)}>{categoryLabels[c]}</Chip>
+            <Chip key={c} active={cat === c} onClick={() => setCat(c)}>
+              {categoryLabels[c]}
+            </Chip>
           ))}
         </div>
       </div>
@@ -72,7 +77,15 @@ function Lib() {
   );
 }
 
-function Chip({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+function Chip({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
   return (
     <button
       onClick={onClick}

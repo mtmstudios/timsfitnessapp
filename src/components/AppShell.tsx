@@ -2,13 +2,21 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { Home, Calendar, Dumbbell, BarChart3, BookOpen } from "lucide-react";
 import type { ReactNode } from "react";
 
-const tabs: { to: string; label: string; icon: typeof Home; exact?: boolean }[] = [
-  { to: "/", label: "Home", icon: Home, exact: true },
-  { to: "/plan", label: "Plan", icon: Calendar },
-  { to: "/exercises", label: "Übungen", icon: BookOpen },
-  { to: "/progress", label: "Fortschritt", icon: BarChart3 },
-  { to: "/mobility", label: "Mobility", icon: Dumbbell },
-];
+const tabs: { to: string; label: string; icon: typeof Home; exact?: boolean; match?: string[] }[] =
+  [
+    { to: "/", label: "Home", icon: Home, exact: true },
+    // Trainings- und Lauf-Seiten gehören inhaltlich zum Plan-Tab
+    { to: "/plan", label: "Plan", icon: Calendar, match: ["/plan", "/training", "/run"] },
+    { to: "/exercises", label: "Übungen", icon: BookOpen },
+    { to: "/progress", label: "Fortschritt", icon: BarChart3 },
+    { to: "/mobility", label: "Mobility", icon: Dumbbell },
+  ];
+
+function isActive(tab: (typeof tabs)[number], pathname: string) {
+  if (tab.exact) return pathname === tab.to;
+  const prefixes = tab.match ?? [tab.to];
+  return prefixes.some((p) => pathname.startsWith(p));
+}
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
@@ -22,7 +30,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </Link>
         <nav className="flex flex-col gap-1">
           {tabs.map((t) => {
-            const active = t.exact ? pathname === t.to : pathname.startsWith(t.to);
+            const active = isActive(t, pathname);
             const Icon = t.icon;
             return (
               <Link
@@ -43,16 +51,14 @@ export function AppShell({ children }: { children: ReactNode }) {
       </aside>
 
       <main className="flex-1 pb-24 md:pb-8">
-        <div className="mx-auto w-full max-w-3xl px-4 pt-6 md:px-8 md:pt-10">
-          {children}
-        </div>
+        <div className="mx-auto w-full max-w-3xl px-4 pt-6 md:px-8 md:pt-10">{children}</div>
       </main>
 
       {/* Mobile bottom nav */}
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 backdrop-blur md:hidden">
         <div className="mx-auto grid max-w-md grid-cols-5">
           {tabs.map((t) => {
-            const active = t.exact ? pathname === t.to : pathname.startsWith(t.to);
+            const active = isActive(t, pathname);
             const Icon = t.icon;
             return (
               <Link

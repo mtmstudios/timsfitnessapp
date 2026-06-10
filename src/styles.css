@@ -93,7 +93,11 @@
   --cat-run: oklch(0.72 0.18 220);
   --cat-dynamic: oklch(0.82 0.18 145);
   --cat-mobility: oklch(0.75 0.15 295);
-  --gradient-hero: linear-gradient(135deg, oklch(0.82 0.18 145 / 0.25), oklch(0.72 0.18 220 / 0.15));
+  --gradient-hero: linear-gradient(
+    135deg,
+    oklch(0.82 0.18 145 / 0.25),
+    oklch(0.72 0.18 220 / 0.15)
+  );
   --shadow-glow: 0 10px 40px -10px oklch(0.82 0.18 145 / 0.4);
 }
 
@@ -108,7 +112,10 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }

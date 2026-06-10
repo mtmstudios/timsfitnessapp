@@ -77,18 +77,34 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Dein Athletik Plan is a mobile-first fitness app for structured training." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Dein Athletik Plan is a mobile-first fitness app for structured training." },
+      { title: "Atlas — Dein Trainingsplan" },
+      {
+        name: "description",
+        content: "Atlas ist dein persönlicher Trainingsplan: Kraft, Lauf, Athletik & Mobility.",
+      },
+      { name: "author", content: "Atlas" },
+      { property: "og:title", content: "Atlas — Dein Trainingsplan" },
+      {
+        property: "og:description",
+        content: "Atlas ist dein persönlicher Trainingsplan: Kraft, Lauf, Athletik & Mobility.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
-      { name: "twitter:description", content: "Dein Athletik Plan is a mobile-first fitness app for structured training." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9959abc4-6171-4cb5-9a68-a27aa6eccabf/id-preview-3d8518c0--1d0bbf95-df06-4391-831b-f0ae83ebe70a.lovable.app-1781097085850.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9959abc4-6171-4cb5-9a68-a27aa6eccabf/id-preview-3d8518c0--1d0bbf95-df06-4391-831b-f0ae83ebe70a.lovable.app-1781097085850.png" },
+      { name: "twitter:title", content: "Atlas — Dein Trainingsplan" },
+      {
+        name: "twitter:description",
+        content: "Atlas ist dein persönlicher Trainingsplan: Kraft, Lauf, Athletik & Mobility.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9959abc4-6171-4cb5-9a68-a27aa6eccabf/id-preview-3d8518c0--1d0bbf95-df06-4391-831b-f0ae83ebe70a.lovable.app-1781097085850.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9959abc4-6171-4cb5-9a68-a27aa6eccabf/id-preview-3d8518c0--1d0bbf95-df06-4391-831b-f0ae83ebe70a.lovable.app-1781097085850.png",
+      },
     ],
     links: [
       {
@@ -111,7 +127,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="de">
       <head>
         <HeadContent />
       </head>

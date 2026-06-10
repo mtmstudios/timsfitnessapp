@@ -5,14 +5,18 @@ import { AppShell } from "@/components/AppShell";
 import { ExerciseAnimation } from "@/components/ExerciseAnimation";
 import { RestTimer } from "@/components/Timer";
 import { getWorkout } from "@/data/workouts";
-import { getExercise } from "@/data/exercises";
+import { findExerciseByName, getExercise } from "@/data/exercises";
 import { addLog, markCompleted } from "@/lib/storage";
 import { weeklyPlan } from "@/data/workouts";
 
 export const Route = createFileRoute("/training/$id/start")({
   head: () => ({ meta: [{ title: "Training läuft — Atlas" }] }),
   component: TrainingMode,
-  notFoundComponent: () => <AppShell><p>Nicht gefunden.</p></AppShell>,
+  notFoundComponent: () => (
+    <AppShell>
+      <p>Nicht gefunden.</p>
+    </AppShell>
+  ),
 });
 
 interface FlatItem {
@@ -39,7 +43,9 @@ function TrainingMode() {
             label: [
               it.sets && `${it.sets}×${it.reps ?? it.duration}`,
               !it.sets && (it.reps ?? it.duration),
-            ].filter(Boolean).join(" "),
+            ]
+              .filter(Boolean)
+              .join(" "),
             rest: it.rest,
             block: rounds > 1 ? `${b.title} – Runde ${r + 1}/${rounds}` : b.title,
           });
@@ -75,7 +81,10 @@ function TrainingMode() {
   if (done) {
     return (
       <AppShell>
-        <div className="space-y-6 rounded-3xl border border-border bg-card p-6 text-center" style={{ backgroundImage: "var(--gradient-hero)" }}>
+        <div
+          className="space-y-6 rounded-3xl border border-border bg-card p-6 text-center"
+          style={{ backgroundImage: "var(--gradient-hero)" }}
+        >
           <div className="text-6xl">💪</div>
           <h1 className="font-display text-3xl font-bold">Training abgeschlossen</h1>
           <p className="text-muted-foreground">Stark. Trag deinen Eindruck ein.</p>
@@ -84,13 +93,24 @@ function TrainingMode() {
         <div className="mt-6 space-y-5 rounded-2xl border border-border bg-card p-5">
           <div>
             <label className="text-sm font-semibold">Wie schwer? {rpe}/10</label>
-            <input type="range" min={1} max={10} value={rpe} onChange={(e) => setRpe(+e.target.value)} className="mt-2 w-full accent-[color:var(--primary)]" />
+            <input
+              type="range"
+              min={1}
+              max={10}
+              value={rpe}
+              onChange={(e) => setRpe(+e.target.value)}
+              className="mt-2 w-full accent-[color:var(--primary)]"
+            />
           </div>
           <div>
             <label className="text-sm font-semibold">Energie</label>
             <div className="mt-2 grid grid-cols-3 gap-2">
               {(["low", "mid", "high"] as const).map((e) => (
-                <button key={e} onClick={() => setEnergy(e)} className={`rounded-full py-2 text-sm font-semibold ${energy === e ? "bg-primary text-primary-foreground" : "border border-border text-muted-foreground"}`}>
+                <button
+                  key={e}
+                  onClick={() => setEnergy(e)}
+                  className={`rounded-full py-2 text-sm font-semibold ${energy === e ? "bg-primary text-primary-foreground" : "border border-border text-muted-foreground"}`}
+                >
                   {e === "low" ? "Niedrig" : e === "mid" ? "Mittel" : "Hoch"}
                 </button>
               ))}
@@ -98,26 +118,48 @@ function TrainingMode() {
           </div>
           <div>
             <label className="text-sm font-semibold">Notizen</label>
-            <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={3} placeholder="Gewicht, Gefühl, was lief gut..." className="mt-2 w-full rounded-xl border border-border bg-background p-3 text-sm" />
+            <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              rows={3}
+              placeholder="Gewicht, Gefühl, was lief gut..."
+              className="mt-2 w-full rounded-xl border border-border bg-background p-3 text-sm"
+            />
           </div>
-          <button onClick={finish} className="w-full rounded-full bg-primary py-3 font-semibold text-primary-foreground">Speichern</button>
+          <button
+            onClick={finish}
+            className="w-full rounded-full bg-primary py-3 font-semibold text-primary-foreground"
+          >
+            Speichern
+          </button>
         </div>
       </AppShell>
     );
   }
 
-  if (!ex || !current) return <AppShell><p>Keine Übung.</p></AppShell>;
+  if (!ex || !current)
+    return (
+      <AppShell>
+        <p>Keine Übung.</p>
+      </AppShell>
+    );
 
   return (
     <AppShell>
-      <Link to="/training/$id" params={{ id: w.id }} className="mb-3 inline-flex items-center gap-1 text-sm text-muted-foreground">
+      <Link
+        to="/training/$id"
+        params={{ id: w.id }}
+        className="mb-3 inline-flex items-center gap-1 text-sm text-muted-foreground"
+      >
         <ChevronLeft className="h-4 w-4" /> Übersicht
       </Link>
 
       <div className="h-2 overflow-hidden rounded-full bg-secondary">
         <div className="h-full bg-primary transition-all" style={{ width: `${pct}%` }} />
       </div>
-      <p className="mt-2 text-xs text-muted-foreground">{current.block} · {idx + 1}/{flat.length}</p>
+      <p className="mt-2 text-xs text-muted-foreground">
+        {current.block} · {idx + 1}/{flat.length}
+      </p>
 
       <div className="mt-4 rounded-3xl border border-border bg-card p-6">
         <div className="grid place-items-center rounded-2xl bg-background py-6">
@@ -127,34 +169,71 @@ function TrainingMode() {
         <p className="text-sm text-muted-foreground">{current.label}</p>
 
         <ul className="mt-3 space-y-1 text-sm text-muted-foreground">
-          {ex.execution.slice(0, 3).map((s, i) => <li key={i}>• {s}</li>)}
+          {ex.execution.slice(0, 3).map((s, i) => (
+            <li key={i}>• {s}</li>
+          ))}
         </ul>
 
         {current.rest && (
           <div className="mt-4">
-            <p className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">Pause {current.rest}</p>
-            <RestTimer seconds={parseInt(current.rest) || 90} />
+            <p className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">
+              Pause {current.rest}
+            </p>
+            {/* key={idx}: Timer startet bei jeder Übung frisch, statt Restzeit mitzunehmen */}
+            <RestTimer key={idx} seconds={parseInt(current.rest) || 90} />
           </div>
         )}
 
         <div className="mt-5 grid grid-cols-2 gap-3">
-          <button onClick={next} className="inline-flex items-center justify-center gap-2 rounded-full bg-primary py-3 font-semibold text-primary-foreground">
+          <button
+            onClick={next}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-primary py-3 font-semibold text-primary-foreground"
+          >
             <Check className="h-4 w-4" /> Erledigt
           </button>
-          <button onClick={next} className="inline-flex items-center justify-center gap-2 rounded-full border border-border py-3 font-semibold text-muted-foreground">
+          <button
+            onClick={next}
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-border py-3 font-semibold text-muted-foreground"
+          >
             <SkipForward className="h-4 w-4" /> Überspringen
           </button>
         </div>
 
         {ex.alternatives.length > 0 && (
           <details className="mt-4">
-            <summary className="cursor-pointer text-sm font-semibold text-primary">Alternative anzeigen</summary>
-            <p className="mt-2 text-sm text-muted-foreground">{ex.alternatives.join(", ")}</p>
+            <summary className="cursor-pointer text-sm font-semibold text-primary">
+              Alternative anzeigen
+            </summary>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {ex.alternatives.map((a) => {
+                const alt = findExerciseByName(a);
+                return alt ? (
+                  <Link
+                    key={a}
+                    to="/exercises/$id"
+                    params={{ id: alt.id }}
+                    className="rounded-full bg-secondary px-3 py-1 text-xs text-primary"
+                  >
+                    {a} →
+                  </Link>
+                ) : (
+                  <span
+                    key={a}
+                    className="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground"
+                  >
+                    {a}
+                  </span>
+                );
+              })}
+            </div>
           </details>
         )}
       </div>
 
-      <button onClick={() => setIdx(0)} className="mt-4 inline-flex items-center gap-1 text-xs text-muted-foreground">
+      <button
+        onClick={() => setIdx(0)}
+        className="mt-4 inline-flex items-center gap-1 text-xs text-muted-foreground"
+      >
         <RotateCcw className="h-3 w-3" /> Von vorn
       </button>
     </AppShell>
