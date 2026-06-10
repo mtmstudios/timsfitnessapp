@@ -1,7 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { AnimationType } from "@/data/exercises";
 
-/** Looping stick-figure SVG that morphs between two key-frame poses. */
+/**
+ * Smooth, frame-interpolated figure animation.
+ * - rAF-driven (no CSS transition jitter)
+ * - Ease-in-out between multiple key poses per exercise
+ * - Thicker, rounded limbs with subtle glow + ground shadow that pulses with motion
+ * - Optional implements (barbell, dumbbells, pull-up bar) per pose
+ */
 export function ExerciseAnimation({
   type,
   size = 220,
@@ -11,61 +17,229 @@ export function ExerciseAnimation({
   size?: number;
   color?: string;
 }) {
-  const [phase, setPhase] = useState(0);
+  const poses = getPoses(type);
+  const cycle = getCycleMs(type);
+  const [t, setT] = useState(0); // 0..1 within the full loop
+  const raf = useRef<number | null>(null);
+  const start = useRef<number>(0);
+
   useEffect(() => {
-    const t = setInterval(() => setPhase((p) => 1 - p), 900);
-    return () => clearInterval(t);
-  }, []);
+    start.current = performance.now();
+    const tick = (now: number) => {
+      const elapsed = (now - start.current) % cycle;
+      setT(elapsed / cycle);
+      raf.current = requestAnimationFrame(tick);
+    };
+    raf.current = requestAnimationFrame(tick);
+    return () => {
+      if (raf.current) cancelAnimationFrame(raf.current);
+    };
+  }, [cycle, type]);
+
+  const pose = interpolatePose(poses, t);
+  // shadow shrinks at top of motion (jump / squat depth out)
+  const lift = Math.max(0, 1 - pose.head.y / 60);
+  const shadowScale = 1 - lift * 0.4;
+
+  const uid = useRef(Math.random().toString(36).slice(2, 8)).current;
 
   return (
     <svg
       viewBox="0 0 200 200"
       width={size}
       height={size}
-      style={{ color }}
+      style={{ color, overflow: "visible" }}
       aria-hidden
     >
       <defs>
-        <radialGradient id="floor" cx="50%" cy="100%" r="60%">
-          <stop offset="0%" stopColor="currentColor" stopOpacity="0.15" />
+        <radialGradient id={`floor-${uid}`} cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="currentColor" stopOpacity="0.28" />
           <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
         </radialGradient>
+        <linearGradient id={`limb-${uid}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="currentColor" stopOpacity="1" />
+          <stop offset="100%" stopColor="currentColor" stopOpacity="0.75" />
+        </linearGradient>
+        <filter id={`glow-${uid}`} x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="2" result="b" />
+          <feMerge>
+            <feMergeNode in="b" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
       </defs>
-      <ellipse cx="100" cy="185" rx="70" ry="8" fill="url(#floor)" />
-      <Figure type={type} phase={phase} />
+
+      {/* ground shadow */}
+      <ellipse
+        cx="100"
+        cy="186"
+        rx={62 * shadowScale}
+        ry={7 * shadowScale}
+        fill={`url(#floor-${uid})`}
+      />
+
+      <Figure pose={pose} uid={uid} />
+      <Implement type={type} pose={pose} uid={uid} />
     </svg>
   );
 }
 
-function Figure({ type, phase }: { type: AnimationType; phase: number }) {
-  const stroke = {
-    stroke: "currentColor",
-    strokeWidth: 4,
+function Figure({ pose: p, uid }: { pose: Pose; uid: string }) {
+  const limb = {
+    stroke: `url(#limb-${uid})`,
+    strokeWidth: 7,
     strokeLinecap: "round" as const,
     strokeLinejoin: "round" as const,
     fill: "none",
+    filter: `url(#glow-${uid})`,
   };
-  const dur = "0.9s";
 
-  const poses = getPoses(type);
-  const a = poses[0];
-  const b = poses[1];
-  const p = phase === 0 ? a : b;
+  // neck point (top of torso, below head)
+  const neck = {
+    x: p.head.x + (p.shoulder.x - p.head.x) * 0.4,
+    y: p.head.y + 10,
+  };
 
   return (
-    <g style={{ transition: `all ${dur} cubic-bezier(.4,.0,.2,1)` }}>
-      {/* head */}
-      <circle cx={p.head.x} cy={p.head.y} r="10" {...stroke} />
-      {/* torso */}
-      <line x1={p.head.x} y1={p.head.y + 10} x2={p.hip.x} y2={p.hip.y} {...stroke} />
+    <g>
+      {/* legs (back first for depth) */}
+      <polyline
+        points={`${p.hip.x},${p.hip.y} ${p.kneeR.x},${p.kneeR.y} ${p.footR.x},${p.footR.y}`}
+        {...limb}
+        opacity={0.75}
+      />
+      <polyline
+        points={`${p.hip.x},${p.hip.y} ${p.kneeL.x},${p.kneeL.y} ${p.footL.x},${p.footL.y}`}
+        {...limb}
+      />
+
+      {/* torso as a tapered shape */}
+      <path
+        d={`M ${p.shoulder.x - 8},${p.shoulder.y} L ${p.shoulder.x + 8},${p.shoulder.y} L ${p.hip.x + 6},${p.hip.y} L ${p.hip.x - 6},${p.hip.y} Z`}
+        fill="currentColor"
+        opacity="0.9"
+      />
+      {/* neck */}
+      <line x1={neck.x} y1={neck.y} x2={p.shoulder.x} y2={p.shoulder.y} {...limb} strokeWidth={5} />
+
       {/* arms */}
-      <polyline points={`${p.handL.x},${p.handL.y} ${p.elbowL.x},${p.elbowL.y} ${p.shoulder.x},${p.shoulder.y}`} {...stroke} />
-      <polyline points={`${p.handR.x},${p.handR.y} ${p.elbowR.x},${p.elbowR.y} ${p.shoulder.x},${p.shoulder.y}`} {...stroke} />
-      {/* legs */}
-      <polyline points={`${p.footL.x},${p.footL.y} ${p.kneeL.x},${p.kneeL.y} ${p.hip.x},${p.hip.y}`} {...stroke} />
-      <polyline points={`${p.footR.x},${p.footR.y} ${p.kneeR.x},${p.kneeR.y} ${p.hip.x},${p.hip.y}`} {...stroke} />
+      <polyline
+        points={`${p.shoulder.x},${p.shoulder.y} ${p.elbowR.x},${p.elbowR.y} ${p.handR.x},${p.handR.y}`}
+        {...limb}
+        opacity={0.85}
+      />
+      <polyline
+        points={`${p.shoulder.x},${p.shoulder.y} ${p.elbowL.x},${p.elbowL.y} ${p.handL.x},${p.handL.y}`}
+        {...limb}
+      />
+
+      {/* head */}
+      <circle
+        cx={p.head.x}
+        cy={p.head.y}
+        r="10"
+        fill="currentColor"
+        filter={`url(#glow-${uid})`}
+      />
     </g>
   );
+}
+
+function Implement({ type, pose: p, uid }: { type: AnimationType; pose: Pose; uid: string }) {
+  const bar = {
+    stroke: "currentColor",
+    strokeWidth: 4,
+    strokeLinecap: "round" as const,
+    fill: "none",
+    opacity: 0.95,
+    filter: `url(#glow-${uid})`,
+  };
+  switch (type) {
+    case "press":
+    case "pull": {
+      // bar between the two hands
+      return (
+        <line x1={p.handL.x - 10} y1={p.handL.y} x2={p.handR.x + 10} y2={p.handR.y} {...bar} />
+      );
+    }
+    case "row": {
+      // cable handle
+      return (
+        <>
+          <line x1={p.handL.x - 6} y1={p.handL.y} x2={p.handR.x + 6} y2={p.handR.y} {...bar} />
+          <line x1={(p.handL.x + p.handR.x) / 2} y1={(p.handL.y + p.handR.y) / 2} x2={200} y2={(p.handL.y + p.handR.y) / 2} {...bar} strokeWidth={2} opacity={0.5} />
+        </>
+      );
+    }
+    case "hinge": {
+      // dumbbells in hands
+      return (
+        <>
+          <Dumbbell x={p.handL.x} y={p.handL.y} />
+          <Dumbbell x={p.handR.x} y={p.handR.y} />
+        </>
+      );
+    }
+    case "carry": {
+      return (
+        <>
+          <Dumbbell x={p.handL.x} y={p.handL.y} />
+          <Dumbbell x={p.handR.x} y={p.handR.y} />
+        </>
+      );
+    }
+    default:
+      return null;
+  }
+}
+
+function Dumbbell({ x, y }: { x: number; y: number }) {
+  return (
+    <g>
+      <rect x={x - 9} y={y - 3} width="18" height="6" rx="1.5" fill="currentColor" opacity={0.9} />
+      <rect x={x - 11} y={y - 6} width="3" height="12" rx="1" fill="currentColor" />
+      <rect x={x + 8} y={y - 6} width="3" height="12" rx="1" fill="currentColor" />
+    </g>
+  );
+}
+
+/* ---------------- pose math ---------------- */
+
+const easeInOut = (x: number) => (x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2);
+
+function lerp(a: number, b: number, t: number) {
+  return a + (b - a) * t;
+}
+
+function lerpPose(a: Pose, b: Pose, t: number): Pose {
+  const keys = Object.keys(a) as (keyof Pose)[];
+  const out: any = {};
+  for (const k of keys) {
+    out[k] = { x: lerp(a[k].x, b[k].x, t), y: lerp(a[k].y, b[k].y, t) };
+  }
+  return out as Pose;
+}
+
+function interpolatePose(poses: Pose[], t: number): Pose {
+  // play poses[0] -> poses[1] -> ... -> poses[0]
+  const segs = poses.length;
+  const scaled = t * segs;
+  const idx = Math.floor(scaled) % segs;
+  const next = (idx + 1) % segs;
+  const local = easeInOut(scaled - Math.floor(scaled));
+  return lerpPose(poses[idx], poses[next], local);
+}
+
+function getCycleMs(type: AnimationType): number {
+  switch (type) {
+    case "run": return 700;
+    case "jump": return 1100;
+    case "rotation": return 1600;
+    case "plank": return 2400;
+    case "stretch": return 2800;
+    case "carry": return 1400;
+    default: return 1800;
+  }
 }
 
 interface Pose {
