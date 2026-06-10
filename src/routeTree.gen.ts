@@ -9,38 +9,174 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RunRouteImport } from './routes/run'
+import { Route as ProgressRouteImport } from './routes/progress'
+import { Route as PlanRouteImport } from './routes/plan'
+import { Route as MobilityRouteImport } from './routes/mobility'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ExercisesIndexRouteImport } from './routes/exercises.index'
+import { Route as ExercisesIdRouteImport } from './routes/exercises.$id'
+import { Route as TrainingIdIndexRouteImport } from './routes/training.$id.index'
+import { Route as TrainingIdStartRouteImport } from './routes/training.$id.start'
 
+const RunRoute = RunRouteImport.update({
+  id: '/run',
+  path: '/run',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgressRoute = ProgressRouteImport.update({
+  id: '/progress',
+  path: '/progress',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanRoute = PlanRouteImport.update({
+  id: '/plan',
+  path: '/plan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MobilityRoute = MobilityRouteImport.update({
+  id: '/mobility',
+  path: '/mobility',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExercisesIndexRoute = ExercisesIndexRouteImport.update({
+  id: '/exercises/',
+  path: '/exercises/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExercisesIdRoute = ExercisesIdRouteImport.update({
+  id: '/exercises/$id',
+  path: '/exercises/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrainingIdIndexRoute = TrainingIdIndexRouteImport.update({
+  id: '/training/$id/',
+  path: '/training/$id/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrainingIdStartRoute = TrainingIdStartRouteImport.update({
+  id: '/training/$id/start',
+  path: '/training/$id/start',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/mobility': typeof MobilityRoute
+  '/plan': typeof PlanRoute
+  '/progress': typeof ProgressRoute
+  '/run': typeof RunRoute
+  '/exercises/$id': typeof ExercisesIdRoute
+  '/exercises/': typeof ExercisesIndexRoute
+  '/training/$id/start': typeof TrainingIdStartRoute
+  '/training/$id/': typeof TrainingIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/mobility': typeof MobilityRoute
+  '/plan': typeof PlanRoute
+  '/progress': typeof ProgressRoute
+  '/run': typeof RunRoute
+  '/exercises/$id': typeof ExercisesIdRoute
+  '/exercises': typeof ExercisesIndexRoute
+  '/training/$id/start': typeof TrainingIdStartRoute
+  '/training/$id': typeof TrainingIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/mobility': typeof MobilityRoute
+  '/plan': typeof PlanRoute
+  '/progress': typeof ProgressRoute
+  '/run': typeof RunRoute
+  '/exercises/$id': typeof ExercisesIdRoute
+  '/exercises/': typeof ExercisesIndexRoute
+  '/training/$id/start': typeof TrainingIdStartRoute
+  '/training/$id/': typeof TrainingIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/mobility'
+    | '/plan'
+    | '/progress'
+    | '/run'
+    | '/exercises/$id'
+    | '/exercises/'
+    | '/training/$id/start'
+    | '/training/$id/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/mobility'
+    | '/plan'
+    | '/progress'
+    | '/run'
+    | '/exercises/$id'
+    | '/exercises'
+    | '/training/$id/start'
+    | '/training/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/mobility'
+    | '/plan'
+    | '/progress'
+    | '/run'
+    | '/exercises/$id'
+    | '/exercises/'
+    | '/training/$id/start'
+    | '/training/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MobilityRoute: typeof MobilityRoute
+  PlanRoute: typeof PlanRoute
+  ProgressRoute: typeof ProgressRoute
+  RunRoute: typeof RunRoute
+  ExercisesIdRoute: typeof ExercisesIdRoute
+  ExercisesIndexRoute: typeof ExercisesIndexRoute
+  TrainingIdStartRoute: typeof TrainingIdStartRoute
+  TrainingIdIndexRoute: typeof TrainingIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/run': {
+      id: '/run'
+      path: '/run'
+      fullPath: '/run'
+      preLoaderRoute: typeof RunRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/progress': {
+      id: '/progress'
+      path: '/progress'
+      fullPath: '/progress'
+      preLoaderRoute: typeof ProgressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plan': {
+      id: '/plan'
+      path: '/plan'
+      fullPath: '/plan'
+      preLoaderRoute: typeof PlanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mobility': {
+      id: '/mobility'
+      path: '/mobility'
+      fullPath: '/mobility'
+      preLoaderRoute: typeof MobilityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +184,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exercises/': {
+      id: '/exercises/'
+      path: '/exercises'
+      fullPath: '/exercises/'
+      preLoaderRoute: typeof ExercisesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exercises/$id': {
+      id: '/exercises/$id'
+      path: '/exercises/$id'
+      fullPath: '/exercises/$id'
+      preLoaderRoute: typeof ExercisesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/training/$id/': {
+      id: '/training/$id/'
+      path: '/training/$id'
+      fullPath: '/training/$id/'
+      preLoaderRoute: typeof TrainingIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/training/$id/start': {
+      id: '/training/$id/start'
+      path: '/training/$id/start'
+      fullPath: '/training/$id/start'
+      preLoaderRoute: typeof TrainingIdStartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MobilityRoute: MobilityRoute,
+  PlanRoute: PlanRoute,
+  ProgressRoute: ProgressRoute,
+  RunRoute: RunRoute,
+  ExercisesIdRoute: ExercisesIdRoute,
+  ExercisesIndexRoute: ExercisesIndexRoute,
+  TrainingIdStartRoute: TrainingIdStartRoute,
+  TrainingIdIndexRoute: TrainingIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

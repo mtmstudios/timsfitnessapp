@@ -1,0 +1,263 @@
+export type ExerciseCategory = "strength" | "dynamic" | "core" | "mobility" | "cardio";
+
+export interface Exercise {
+  id: string;
+  name: string;
+  category: ExerciseCategory;
+  muscles: string[];
+  difficulty: "leicht" | "mittel" | "schwer";
+  equipment: string[];
+  execution: string[];
+  mistakes: string[];
+  tips: string[];
+  alternatives: string[];
+  animation: AnimationType;
+}
+
+export type AnimationType =
+  | "squat"
+  | "pushup"
+  | "hinge"
+  | "row"
+  | "press"
+  | "pull"
+  | "lunge"
+  | "plank"
+  | "run"
+  | "stretch"
+  | "rotation"
+  | "jump"
+  | "carry";
+
+export const exercises: Exercise[] = [
+  // KRAFT
+  {
+    id: "leg-press", name: "Beinpresse", category: "strength",
+    muscles: ["Beine", "Gesäß", "Rumpf"], difficulty: "mittel", equipment: ["Beinpresse"],
+    execution: ["Füße schulterbreit auf der Platte", "Knie kontrolliert beugen bis ~90°", "Über die Fersen kraftvoll wegdrücken", "Knie nie ganz durchstrecken"],
+    mistakes: ["Knie kippen nach innen", "Rücken hebt von der Lehne", "Zu kurze ROM"],
+    tips: ["Atme beim Drücken aus", "Spannung halten"],
+    alternatives: ["Kniebeuge", "Goblet Squat", "Split Squat"], animation: "squat",
+  },
+  {
+    id: "squat", name: "Kniebeuge", category: "strength",
+    muscles: ["Quadrizeps", "Gesäß", "Rumpf"], difficulty: "mittel", equipment: ["Langhantel", "Rack"],
+    execution: ["Stange auf hintere Schulter", "Hüfte zuerst nach hinten", "Tief setzen, Brust auf", "Über Fersen hochdrücken"],
+    mistakes: ["Knie nach innen", "Runder Rücken", "Fersen heben"],
+    tips: ["Mobility vorher checken", "Sauber vor Gewicht"],
+    alternatives: ["Beinpresse", "Goblet Squat"], animation: "squat",
+  },
+  {
+    id: "bench-press", name: "Bankdrücken", category: "strength",
+    muscles: ["Brust", "Schulter", "Trizeps"], difficulty: "mittel", equipment: ["Langhantel", "Bank"],
+    execution: ["Schulterblätter zusammenziehen", "Stange Richtung untere Brust", "Kontrolliert ablassen", "Kraftvoll hochdrücken"],
+    mistakes: ["Ellbogen flatternd", "Po hebt von Bank", "Stange zu hoch"],
+    tips: ["Spotter bei schwer", "Saubere Bahn"],
+    alternatives: ["Kurzhantel-Bankdrücken", "Brustpresse", "Liegestütze"], animation: "press",
+  },
+  {
+    id: "db-bench", name: "Kurzhantel-Bankdrücken", category: "strength",
+    muscles: ["Brust", "Schulter", "Trizeps"], difficulty: "mittel", equipment: ["Kurzhanteln", "Bank"],
+    execution: ["Hanteln auf Brusthöhe", "Ellbogen ~45°", "Kontrolliert hoch", "Nicht zusammenschlagen"],
+    mistakes: ["Zu breiter Ellbogen", "Volle Streckung schlackernd"],
+    tips: ["Gleichmäßiges Tempo"],
+    alternatives: ["Bankdrücken", "Brustpresse"], animation: "press",
+  },
+  {
+    id: "row-machine", name: "Rudern Maschine", category: "strength",
+    muscles: ["Rücken", "hintere Schulter", "Bizeps"], difficulty: "leicht", equipment: ["Rudermaschine"],
+    execution: ["Brust an Pad", "Ellbogen nach hinten ziehen", "Schulterblätter zusammen", "Kontrolliert zurück"],
+    mistakes: ["Mit Schwung arbeiten", "Schultern hochziehen"],
+    tips: ["Spannung im Rücken halten"],
+    alternatives: ["Kabelrudern", "KH-Rudern"], animation: "row",
+  },
+  {
+    id: "cable-row", name: "Kabelrudern", category: "strength",
+    muscles: ["Rücken", "Bizeps"], difficulty: "leicht", equipment: ["Kabelzug"],
+    execution: ["Aufrechter Sitz", "Griff zum Bauch ziehen", "Schulterblätter zusammen", "Langsam zurück"],
+    mistakes: ["Rücken rund", "Mit Oberkörper schwingen"],
+    tips: ["Bauch fest"],
+    alternatives: ["Rudermaschine", "KH-Rudern"], animation: "row",
+  },
+  {
+    id: "rdl", name: "Rumänisches Kreuzheben", category: "strength",
+    muscles: ["Beinrückseite", "Gesäß", "unterer Rücken"], difficulty: "mittel", equipment: ["Langhantel"],
+    execution: ["Stange dicht am Körper", "Hüfte nach hinten", "Knie leicht gebeugt", "Bis Beinrückseite dehnt"],
+    mistakes: ["Runder Rücken", "Stange zu weit weg"],
+    tips: ["Hinge-Bewegung, kein Squat"],
+    alternatives: ["Hip Hinge KH", "Beinbeuger", "Hip Thrust"], animation: "hinge",
+  },
+  {
+    id: "shoulder-press", name: "Schulterdrücken", category: "strength",
+    muscles: ["Schultern", "Trizeps"], difficulty: "mittel", equipment: ["Kurzhanteln"],
+    execution: ["Hanteln auf Schulterhöhe", "Gerade nach oben drücken", "Ellbogen leicht vor Körper", "Kontrolliert ablassen"],
+    mistakes: ["Hohlkreuz", "Hanteln nach hinten kippen"],
+    tips: ["Core fest"],
+    alternatives: ["Schulterpresse Maschine", "Arnold Press"], animation: "press",
+  },
+  {
+    id: "hip-thrust", name: "Hip Thrust", category: "strength",
+    muscles: ["Gesäß", "Beinrückseite"], difficulty: "mittel", equipment: ["Langhantel", "Bank"],
+    execution: ["Schulterblätter auf Bank", "Stange über Hüfte", "Hüfte hoch bis gerade Linie", "Gesäß fest anspannen"],
+    mistakes: ["Überstrecken", "Knie kippen ein"],
+    tips: ["Kinn leicht eingezogen"],
+    alternatives: ["Glute Bridge", "Beinpresse"], animation: "hinge",
+  },
+  {
+    id: "deadlift", name: "Kreuzheben moderat", category: "strength",
+    muscles: ["Ganzkörper", "Rücken", "Beine"], difficulty: "schwer", equipment: ["Langhantel"],
+    execution: ["Stange über Mittelfuß", "Hüfte und Knie beugen", "Brust auf, neutraler Rücken", "Über Beine hochdrücken"],
+    mistakes: ["Runder Rücken", "Hüfte schießt hoch"],
+    tips: ["Moderate Gewichte für Sauberkeit"],
+    alternatives: ["RDL", "Hip Thrust"], animation: "hinge",
+  },
+  {
+    id: "lat-pulldown", name: "Latzug", category: "strength",
+    muscles: ["Rücken", "Bizeps"], difficulty: "leicht", equipment: ["Latzugmaschine"],
+    execution: ["Schulterbreit fassen", "Brust raus", "Stange Richtung obere Brust", "Kontrolliert hoch"],
+    mistakes: ["Mit Schwung", "Stange in den Nacken"],
+    tips: ["Ellbogen nach unten denken"],
+    alternatives: ["Klimmzüge", "Assisted Pull-up"], animation: "pull",
+  },
+  {
+    id: "pullup", name: "Klimmzüge", category: "strength",
+    muscles: ["Rücken", "Bizeps"], difficulty: "schwer", equipment: ["Klimmzugstange"],
+    execution: ["Hang mit gestreckten Armen", "Schulterblätter aktivieren", "Brust zur Stange", "Kontrolliert ablassen"],
+    mistakes: ["Schwung", "Halbe ROM"],
+    tips: ["Bei Bedarf Assist-Band"],
+    alternatives: ["Latzug", "Assisted Pull-up"], animation: "pull",
+  },
+  {
+    id: "incline-press", name: "Schrägbankdrücken", category: "strength",
+    muscles: ["obere Brust", "Schulter", "Trizeps"], difficulty: "mittel", equipment: ["Kurzhanteln", "Schrägbank"],
+    execution: ["30–45° Schrägbank", "Hanteln zu oberer Brust", "Kontrolliert hoch", "Ellbogen ~45°"],
+    mistakes: ["Zu steile Bank", "Halbe Bewegung"],
+    tips: ["Schulterblätter zurück"],
+    alternatives: ["Schrägbank Maschine", "Liegestütze erhöht"], animation: "press",
+  },
+  {
+    id: "bulgarian-split", name: "Bulgarian Split Squat", category: "strength",
+    muscles: ["Beine", "Gesäß", "Stabilität"], difficulty: "mittel", equipment: ["Bank", "Kurzhanteln"],
+    execution: ["Hinterer Fuß auf Bank", "Vorderes Bein beugen", "Knie über Mittelfuß", "Über Ferse hoch"],
+    mistakes: ["Knie kippt ein", "Fuß zu nah an Bank"],
+    tips: ["Oberkörper leicht vor"],
+    alternatives: ["Ausfallschritte", "Step-ups"], animation: "lunge",
+  },
+  {
+    id: "lunges", name: "Ausfallschritte", category: "strength",
+    muscles: ["Beine", "Gesäß"], difficulty: "leicht", equipment: ["optional Kurzhanteln"],
+    execution: ["Großer Schritt nach vorne", "Beide Knie ~90°", "Über Ferse zurückdrücken", "Wechselseitig"],
+    mistakes: ["Knie über Zehenspitze", "Oberkörper kippt"],
+    tips: ["Aufrechter Oberkörper"],
+    alternatives: ["Split Squat", "Step-ups"], animation: "lunge",
+  },
+  {
+    id: "face-pulls", name: "Face Pulls", category: "strength",
+    muscles: ["hintere Schulter", "Haltung"], difficulty: "leicht", equipment: ["Kabelzug", "Seil"],
+    execution: ["Seil zur Stirn ziehen", "Ellbogen hoch und außen", "Schulterblätter zusammen", "Kontrolliert zurück"],
+    mistakes: ["Mit Trapezius arbeiten"],
+    tips: ["Eher leicht und sauber"],
+    alternatives: ["Reverse Flys", "Band Pull-Apart"], animation: "row",
+  },
+  {
+    id: "reverse-flys", name: "Reverse Flys", category: "strength",
+    muscles: ["hintere Schulter"], difficulty: "leicht", equipment: ["Kurzhanteln"],
+    execution: ["Vorgebeugt mit neutralem Rücken", "Arme leicht gebeugt", "Seitlich hochziehen", "Schulterblätter zusammen"],
+    mistakes: ["Schwung", "Schultern hoch"],
+    tips: ["Spannung halten"],
+    alternatives: ["Face Pulls"], animation: "row",
+  },
+  {
+    id: "farmer-walk", name: "Farmer's Walk", category: "strength",
+    muscles: ["Griff", "Core", "Schultern"], difficulty: "mittel", equipment: ["Kurzhanteln"],
+    execution: ["Schwere KH an Seiten", "Aufrecht gehen", "Schultern zurück", "30–60m Strecke"],
+    mistakes: ["Schultern hochziehen", "Hohlkreuz"],
+    tips: ["Atmen nicht vergessen"],
+    alternatives: ["Suitcase Carry"], animation: "carry",
+  },
+  {
+    id: "pallof-press", name: "Pallof Press", category: "core",
+    muscles: ["Core", "Anti-Rotation"], difficulty: "leicht", equipment: ["Kabelzug"],
+    execution: ["Seitlich zum Kabel", "Griff vor Brust", "Gerade nach vorne drücken", "Halten, zurück"],
+    mistakes: ["Oberkörper dreht"],
+    tips: ["Core gegen Rotation halten"],
+    alternatives: ["Bandvariante"], animation: "rotation",
+  },
+  {
+    id: "cable-crunch", name: "Cable Crunch", category: "core",
+    muscles: ["Bauch"], difficulty: "leicht", equipment: ["Kabelzug"],
+    execution: ["Kniend vor Kabel", "Seil hinter Kopf", "Mit Bauchmuskeln runter rollen", "Kontrolliert zurück"],
+    mistakes: ["Mit Armen ziehen", "Hüfte bewegt sich"],
+    tips: ["Aus dem Bauch arbeiten"],
+    alternatives: ["Crunch", "Hanging Knee Raise"], animation: "rotation",
+  },
+  {
+    id: "hanging-knee", name: "Hanging Knee Raises", category: "core",
+    muscles: ["Bauch", "Hüftbeuger"], difficulty: "mittel", equipment: ["Klimmzugstange"],
+    execution: ["Im Hang", "Knie kontrolliert nach oben", "Bauch zusammenrollen", "Langsam ablassen"],
+    mistakes: ["Schwingen", "Mit Hüftbeuger reißen"],
+    tips: ["Schulterblätter aktiv"],
+    alternatives: ["Lying Leg Raise"], animation: "rotation",
+  },
+
+  // DYNAMIK
+  { id: "air-squat", name: "Air Squats", category: "dynamic", muscles: ["Beine"], difficulty: "leicht", equipment: [], execution: ["Tief gehen", "Aufrecht bleiben", "Über Fersen hoch"], mistakes: ["Knie nach innen"], tips: ["Atemfluss"], alternatives: ["Goblet Squat"], animation: "squat" },
+  { id: "fast-air-squat", name: "Schnelle Air Squats", category: "dynamic", muscles: ["Beine", "Puls"], difficulty: "leicht", equipment: [], execution: ["Air Squat mit Tempo", "Saubere Form halten"], mistakes: ["Tempo vor Technik"], tips: ["Atemrhythmus"], alternatives: ["Squat Jumps"], animation: "squat" },
+  { id: "squat-jump", name: "Squat Jumps", category: "dynamic", muscles: ["Beine", "Power"], difficulty: "mittel", equipment: [], execution: ["Squat tief", "Explosiv hochspringen", "Weich landen"], mistakes: ["Steife Landung"], tips: ["Knie kontrolliert"], alternatives: ["Fast Air Squats", "Step-ups"], animation: "jump" },
+  { id: "step-up", name: "Step-ups", category: "dynamic", muscles: ["Beine", "Gesäß"], difficulty: "leicht", equipment: ["Bank"], execution: ["Fuß komplett auf Bank", "Über Ferse hoch", "Kontrolliert runter"], mistakes: ["Abdrücken vom hinteren Bein"], tips: ["Sauber arbeiten"], alternatives: ["Bulgarian Split Squat"], animation: "lunge" },
+  { id: "db-rdl-explosive", name: "KH RDL explosiv", category: "dynamic", muscles: ["Beinrückseite", "Power"], difficulty: "mittel", equipment: ["Kurzhanteln"], execution: ["Hinge sauber runter", "Explosiv hoch", "Kontrolliert ablassen"], mistakes: ["Runder Rücken"], tips: ["Moderat Gewicht"], alternatives: ["RDL"], animation: "hinge" },
+  { id: "goblet-squat", name: "Goblet Squat", category: "dynamic", muscles: ["Beine", "Core"], difficulty: "leicht", equipment: ["Kurzhantel"], execution: ["KH vor Brust", "Tiefer Squat", "Aufrechter Rücken"], mistakes: ["KH zu tief halten"], tips: ["Ellbogen zwischen Knie"], alternatives: ["Air Squat"], animation: "squat" },
+  { id: "pushup", name: "Liegestütze", category: "dynamic", muscles: ["Brust", "Trizeps", "Core"], difficulty: "mittel", equipment: [], execution: ["Plank", "Körper senken", "Ellbogen ~45°", "Hochdrücken"], mistakes: ["Hüfte sackt"], tips: ["Bauch fest"], alternatives: ["Knie-Liegestütz", "Brustpresse"], animation: "pushup" },
+  { id: "chest-press", name: "Brustpresse", category: "strength", muscles: ["Brust"], difficulty: "leicht", equipment: ["Brustpresse"], execution: ["Griffe auf Brusthöhe", "Kontrolliert wegdrücken", "Langsam zurück"], mistakes: ["Schultern hoch"], tips: ["Schulterblätter unten"], alternatives: ["Bankdrücken"], animation: "press" },
+  { id: "shoulder-tap", name: "Plank Shoulder Taps", category: "dynamic", muscles: ["Core"], difficulty: "leicht", equipment: [], execution: ["Plank halten", "Hand zur gegenüber. Schulter", "Hüfte stabil"], mistakes: ["Hüfte schaukelt"], tips: ["Langsam"], alternatives: ["Plank"], animation: "plank" },
+  { id: "mountain-climbers", name: "Mountain Climbers langsam", category: "dynamic", muscles: ["Core", "Puls"], difficulty: "leicht", equipment: [], execution: ["Plank", "Knie zur Brust", "Wechselseitig"], mistakes: ["Hüfte hoch"], tips: ["Kontrolle vor Tempo"], alternatives: ["Shoulder Taps", "Dead Bug"], animation: "plank" },
+
+  // CORE
+  { id: "plank", name: "Plank", category: "core", muscles: ["Core"], difficulty: "leicht", equipment: [], execution: ["Unterarmstütz", "Gerade Linie Schulter–Hüfte–Knöchel", "Bauch fest"], mistakes: ["Hüfte sackt"], tips: ["Atmen"], alternatives: ["Knie-Plank"], animation: "plank" },
+  { id: "side-plank", name: "Side Plank", category: "core", muscles: ["seitlicher Core"], difficulty: "mittel", equipment: [], execution: ["Seitlich stützen", "Hüfte hoch", "Gerade Linie"], mistakes: ["Hüfte fällt"], tips: ["Atmen"], alternatives: ["Knie-Side-Plank"], animation: "plank" },
+  { id: "dead-bug", name: "Dead Bug", category: "core", muscles: ["Core"], difficulty: "leicht", equipment: [], execution: ["Rücken flach", "Gegenüberliegende Arm/Bein strecken", "Lower Back am Boden"], mistakes: ["Lower Back hebt"], tips: ["Langsam"], alternatives: ["Bird Dog"], animation: "plank" },
+
+  // MOBILITY
+  { id: "hip-flexor", name: "Hüftbeuger-Stretch", category: "mobility", muscles: ["Hüftbeuger"], difficulty: "leicht", equipment: [], execution: ["Halber Kniestand", "Becken nach vorne kippen", "Halten"], mistakes: ["Hohlkreuz"], tips: ["Bauch fest"], alternatives: ["Couch Stretch"], animation: "stretch" },
+  { id: "couch-stretch", name: "Couch Stretch", category: "mobility", muscles: ["Quadrizeps", "Hüftbeuger"], difficulty: "mittel", equipment: ["Bank/Wand"], execution: ["Hinteres Bein an Bank", "Aufrichten", "Hüfte schiebt vor"], mistakes: ["Hohlkreuz"], tips: ["Tief atmen"], alternatives: ["Hüftbeuger-Stretch"], animation: "stretch" },
+  { id: "hamstring", name: "Beinrückseite dehnen", category: "mobility", muscles: ["Beinrückseite"], difficulty: "leicht", equipment: [], execution: ["Bein lang", "Hüfte nach vorne neigen", "Rücken gerade"], mistakes: ["Runder Rücken"], tips: ["Sanft"], alternatives: ["Liegende Variante"], animation: "stretch" },
+  { id: "chest-stretch", name: "Brust-/Schulterstretch", category: "mobility", muscles: ["Brust", "Schulter"], difficulty: "leicht", equipment: ["Türrahmen"], execution: ["Arm an Wand", "Körper wegdrehen"], mistakes: ["Schulter hoch"], tips: ["Sanft"], alternatives: ["Lat-Stretch"], animation: "stretch" },
+  { id: "lat-stretch", name: "Lat-Stretch", category: "mobility", muscles: ["Lat"], difficulty: "leicht", equipment: ["Rack"], execution: ["Greifen", "Hüfte zurück", "Lat öffnen"], mistakes: ["Hohlkreuz"], tips: ["Atmen"], alternatives: ["Brust-Stretch"], animation: "stretch" },
+  { id: "cat-cow", name: "Cat-Cow", category: "mobility", muscles: ["Wirbelsäule"], difficulty: "leicht", equipment: [], execution: ["Vierfüßler", "Rücken rund/hohl", "Im Atem"], mistakes: ["Zu hektisch"], tips: ["Mit Atem führen"], alternatives: ["Thoracic Rotation"], animation: "rotation" },
+  { id: "thoracic", name: "Thoracic Rotation", category: "mobility", muscles: ["BWS"], difficulty: "leicht", equipment: [], execution: ["Vierfüßler", "Hand an Schläfe", "Ellbogen nach oben drehen"], mistakes: ["Aus Hüfte rotieren"], tips: ["Aus BWS"], alternatives: ["Open Book"], animation: "rotation" },
+  { id: "deep-squat", name: "Tiefer Squat Hold", category: "mobility", muscles: ["Hüfte", "Knöchel"], difficulty: "leicht", equipment: [], execution: ["Tief in Squat", "Ellbogen zwischen Knie", "Halten und atmen"], mistakes: ["Fersen heben"], tips: ["Festhalten falls nötig"], alternatives: ["Goblet Squat Hold"], animation: "squat" },
+
+  // CARDIO
+  { id: "easy-run", name: "Lockerer Lauf", category: "cardio", muscles: ["Ausdauer"], difficulty: "leicht", equipment: [], execution: ["Locker traben", "Atmung kontrolliert", "Sprechtempo halten"], mistakes: ["Zu schnell starten"], tips: ["Gesprächspace"], alternatives: ["Crosstrainer"], animation: "run" },
+  { id: "interval-run", name: "Intervalllauf", category: "cardio", muscles: ["Ausdauer", "Tempo"], difficulty: "mittel", equipment: [], execution: ["Einlaufen", "1 min schnell / 2 min locker", "6× wiederholen", "Auslaufen"], mistakes: ["Sprinten statt zügig"], tips: ["Kontrolliert anstrengend"], alternatives: ["Tempolauf"], animation: "run" },
+  { id: "long-run", name: "Langer lockerer Lauf", category: "cardio", muscles: ["Grundlagenausdauer"], difficulty: "mittel", equipment: [], execution: ["40–60 min locker", "Zeit auf den Beinen"], mistakes: ["Zu schnell"], tips: ["Geduldig"], alternatives: ["Radfahren locker"], animation: "run" },
+  { id: "walk", name: "Gehen Warm-up", category: "cardio", muscles: [], difficulty: "leicht", equipment: [], execution: ["5 min lockeres Gehen"], mistakes: [], tips: [], alternatives: ["Radfahren"], animation: "run" },
+  { id: "bike", name: "Radfahren locker", category: "cardio", muscles: ["Beine", "Ausdauer"], difficulty: "leicht", equipment: ["Fahrrad-Ergometer"], execution: ["Niedriger Widerstand", "Locker treten"], mistakes: ["Zu hoher Widerstand"], tips: [], alternatives: ["Crosstrainer"], animation: "run" },
+  { id: "cross", name: "Crosstrainer locker", category: "cardio", muscles: ["Ganzkörper"], difficulty: "leicht", equipment: ["Crosstrainer"], execution: ["Lockerer Rhythmus"], mistakes: [], tips: [], alternatives: ["Radfahren"], animation: "run" },
+  { id: "stepper", name: "Stepper locker", category: "cardio", muscles: ["Beine"], difficulty: "leicht", equipment: ["Stepper"], execution: ["Gleichmäßiger Schritt"], mistakes: ["Auf Geländer hängen"], tips: [], alternatives: ["Crosstrainer"], animation: "run" },
+  { id: "scapula-pushup", name: "Scapula Push-ups", category: "mobility", muscles: ["Schulterblätter"], difficulty: "leicht", equipment: [], execution: ["Plank-Position", "Schulterblätter zusammen/auseinander"], mistakes: ["Mit Ellbogen arbeiten"], tips: ["Kleine ROM"], alternatives: ["Wall Slides"], animation: "plank" },
+  { id: "band-pullapart", name: "Band Pull-Apart", category: "mobility", muscles: ["hintere Schulter"], difficulty: "leicht", equipment: ["Band"], execution: ["Band auf Brusthöhe", "Auseinander ziehen", "Schulterblätter zusammen"], mistakes: ["Schultern hoch"], tips: ["Leichtes Band"], alternatives: ["Face Pulls"], animation: "row" },
+  { id: "hip-circle", name: "Hüftkreisen", category: "mobility", muscles: ["Hüfte"], difficulty: "leicht", equipment: [], execution: ["Knie hoch, kreisen"], mistakes: [], tips: [], alternatives: [], animation: "rotation" },
+  { id: "arm-circle", name: "Armkreisen", category: "mobility", muscles: ["Schulter"], difficulty: "leicht", equipment: [], execution: ["Arme kreisen"], mistakes: [], tips: [], alternatives: [], animation: "rotation" },
+  { id: "hip-hinge", name: "Hip Hinge", category: "mobility", muscles: ["Hüfte"], difficulty: "leicht", equipment: [], execution: ["Hüfte zurück", "Knie leicht gebeugt", "Rücken neutral"], mistakes: ["Squat statt Hinge"], tips: [], alternatives: [], animation: "hinge" },
+];
+
+export function getExercise(id: string) {
+  return exercises.find((e) => e.id === id);
+}
+
+export const categoryLabels: Record<ExerciseCategory, string> = {
+  strength: "Krafttraining",
+  cardio: "Laufen",
+  dynamic: "Dynamisch",
+  mobility: "Mobility",
+  core: "Core",
+};
+
+export const categoryColor: Record<ExerciseCategory, string> = {
+  strength: "var(--cat-strength)",
+  cardio: "var(--cat-run)",
+  dynamic: "var(--cat-dynamic)",
+  mobility: "var(--cat-mobility)",
+  core: "var(--cat-mobility)",
+};
