@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { ChevronLeft, Check, SkipForward, RotateCcw } from "lucide-react";
+import { ChevronLeft, Check, SkipForward, RotateCcw, Award } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { ExerciseAnimation } from "@/components/ExerciseAnimation";
 import { RestTimer } from "@/components/Timer";
@@ -85,7 +85,9 @@ function TrainingMode() {
           className="space-y-6 rounded-3xl border border-border bg-card p-6 text-center"
           style={{ backgroundImage: "var(--gradient-hero)" }}
         >
-          <div className="text-6xl">💪</div>
+          <div className="mx-auto grid h-20 w-20 place-items-center rounded-full border border-primary/30 bg-primary/10 text-primary">
+            <Award className="h-10 w-10" strokeWidth={1.5} />
+          </div>
           <h1 className="font-display text-3xl font-bold">Training abgeschlossen</h1>
           <p className="text-muted-foreground">Stark. Trag deinen Eindruck ein.</p>
         </div>

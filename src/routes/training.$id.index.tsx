@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { Play, ChevronLeft, Clock } from "lucide-react";
+import { Play, ChevronLeft, Clock, Flame } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { CategoryBadge } from "@/components/CategoryBadge";
 import { ExerciseAnimation } from "@/components/ExerciseAnimation";
@@ -43,7 +43,9 @@ function TrainingDetail() {
           <span className="inline-flex items-center gap-1">
             <Clock className="h-4 w-4 text-muted-foreground" /> {w.duration}
           </span>
-          <span>🔥 Intensität {w.intensity}</span>
+          <span className="inline-flex items-center gap-1">
+            <Flame className="h-4 w-4 text-muted-foreground" /> Intensität {w.intensity}
+          </span>
         </div>
         <Link
           to="/training/$id/start"

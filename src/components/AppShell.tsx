@@ -26,7 +26,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <aside className="hidden md:flex md:w-64 md:flex-col md:border-r md:border-border md:bg-sidebar md:p-6">
         <Link to="/" className="mb-8 flex items-center gap-2">
           <Logo />
-          <span className="font-display text-xl font-bold tracking-tight">ATLAS</span>
+          <span className="font-display text-xl font-semibold tracking-[0.22em]">ATLAS</span>
         </Link>
         <nav className="flex flex-col gap-1">
           {tabs.map((t) => {

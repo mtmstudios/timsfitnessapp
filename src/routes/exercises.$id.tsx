@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ChevronLeft } from "lucide-react";
+import { Check, ChevronLeft, X } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { CategoryBadge } from "@/components/CategoryBadge";
 import { ExerciseAnimation } from "@/components/ExerciseAnimation";
@@ -67,7 +67,9 @@ function ExerciseDetail() {
           <h2 className="font-display text-lg font-bold">Häufige Fehler</h2>
           <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
             {ex.mistakes.map((m, i) => (
-              <li key={i}>✕ {m}</li>
+              <li key={i} className="flex items-start gap-2">
+                <X className="mt-0.5 h-3.5 w-3.5 shrink-0 text-destructive" /> {m}
+              </li>
             ))}
           </ul>
         </section>
@@ -78,7 +80,9 @@ function ExerciseDetail() {
           <h2 className="font-display text-lg font-bold">Tipps</h2>
           <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
             {ex.tips.map((m, i) => (
-              <li key={i}>✓ {m}</li>
+              <li key={i} className="flex items-start gap-2">
+                <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" /> {m}
+              </li>
             ))}
           </ul>
         </section>

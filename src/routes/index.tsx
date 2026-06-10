@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Flame, ChevronRight, CheckCircle2, Calendar as CalendarIcon } from "lucide-react";
+import { Flame, ChevronRight, CheckCircle2, Calendar as CalendarIcon, Clock } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { CategoryBadge } from "@/components/CategoryBadge";
 import { weeklyPlan, weekdaysLong, getWorkout, motivationalQuotes } from "@/data/workouts";
@@ -42,7 +42,7 @@ function Dashboard() {
         <header>
           <p className="text-sm text-muted-foreground">{weekdaysLong[today]}</p>
           <h1 className="font-display text-3xl font-bold md:text-4xl">Bereit für heute?</h1>
-          <p className="mt-2 text-sm text-muted-foreground italic">„{quote}"</p>
+          <p className="mt-2 font-display text-base italic text-muted-foreground">„{quote}"</p>
         </header>
 
         {/* Hero — today */}
@@ -60,8 +60,12 @@ function Dashboard() {
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">{todayWorkout.goal}</p>
               <div className="mt-4 flex flex-wrap gap-3 text-sm text-muted-foreground">
-                <span>⏱ {todayWorkout.duration}</span>
-                <span>🔥 {todayWorkout.intensity}</span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Clock className="h-3.5 w-3.5" /> {todayWorkout.duration}
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Flame className="h-3.5 w-3.5" /> {todayWorkout.intensity}
+                </span>
               </div>
             </div>
             <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground transition group-hover:scale-110">
@@ -157,7 +161,7 @@ function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-2xl border border-border bg-card p-4">
       <div className="text-xs uppercase tracking-wider text-muted-foreground">{label}</div>
-      <div className="mt-1 truncate font-display text-lg font-bold">{value}</div>
+      <div className="mt-1 truncate text-lg font-semibold tabular-nums">{value}</div>
     </div>
   );
 }

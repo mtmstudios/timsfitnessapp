@@ -4,7 +4,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Design system — Atlas Fitness (dark, sportlich, premium) */
+/* Design system — Atlas Fitness (dunkel, edel, ruhig: warme Stone-Töne + Champagner-Gold) */
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -51,54 +51,58 @@
   --color-cat-run: var(--cat-run);
   --color-cat-dynamic: var(--cat-dynamic);
   --color-cat-mobility: var(--cat-mobility);
-  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-display: "Cormorant Garamond", Georgia, serif;
   --font-sans: "Inter", system-ui, sans-serif;
 }
 
 :root {
   --radius: 1rem;
-  --background: oklch(0.16 0.012 250);
-  --foreground: oklch(0.97 0.005 250);
-  --card: oklch(0.21 0.014 250);
-  --card-foreground: oklch(0.97 0.005 250);
-  --popover: oklch(0.21 0.014 250);
-  --popover-foreground: oklch(0.97 0.005 250);
-  --primary: oklch(0.82 0.18 145);
-  --primary-foreground: oklch(0.16 0.02 145);
-  --secondary: oklch(0.27 0.018 250);
-  --secondary-foreground: oklch(0.97 0.005 250);
-  --muted: oklch(0.25 0.015 250);
-  --muted-foreground: oklch(0.68 0.02 250);
-  --accent: oklch(0.82 0.18 145);
-  --accent-foreground: oklch(0.16 0.02 145);
-  --destructive: oklch(0.65 0.23 25);
-  --destructive-foreground: oklch(0.98 0.005 250);
-  --border: oklch(1 0 0 / 8%);
-  --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.82 0.18 145);
-  --chart-1: oklch(0.82 0.18 145);
-  --chart-2: oklch(0.7 0.18 220);
-  --chart-3: oklch(0.75 0.18 50);
-  --chart-4: oklch(0.72 0.2 320);
-  --chart-5: oklch(0.78 0.15 180);
-  --sidebar: oklch(0.19 0.013 250);
-  --sidebar-foreground: oklch(0.97 0.005 250);
-  --sidebar-primary: oklch(0.82 0.18 145);
-  --sidebar-primary-foreground: oklch(0.16 0.02 145);
-  --sidebar-accent: oklch(0.27 0.018 250);
-  --sidebar-accent-foreground: oklch(0.97 0.005 250);
-  --sidebar-border: oklch(1 0 0 / 8%);
-  --sidebar-ring: oklch(0.82 0.18 145);
-  --cat-strength: oklch(0.75 0.18 50);
-  --cat-run: oklch(0.72 0.18 220);
-  --cat-dynamic: oklch(0.82 0.18 145);
-  --cat-mobility: oklch(0.75 0.15 295);
+  /* Warmes Fast-Schwarz statt kühlem Grau */
+  --background: oklch(0.145 0.005 60);
+  --foreground: oklch(0.94 0.01 80);
+  --card: oklch(0.185 0.006 60);
+  --card-foreground: oklch(0.94 0.01 80);
+  --popover: oklch(0.185 0.006 60);
+  --popover-foreground: oklch(0.94 0.01 80);
+  /* Champagner-Gold, bewusst niedrige Sättigung */
+  --primary: oklch(0.78 0.085 85);
+  --primary-foreground: oklch(0.2 0.03 80);
+  --secondary: oklch(0.24 0.008 60);
+  --secondary-foreground: oklch(0.94 0.01 80);
+  --muted: oklch(0.22 0.007 60);
+  --muted-foreground: oklch(0.66 0.015 75);
+  --accent: oklch(0.78 0.085 85);
+  --accent-foreground: oklch(0.2 0.03 80);
+  --destructive: oklch(0.55 0.12 25);
+  --destructive-foreground: oklch(0.96 0.008 80);
+  --border: oklch(0.9 0.02 80 / 9%);
+  --input: oklch(0.9 0.02 80 / 13%);
+  --ring: oklch(0.78 0.085 85);
+  --chart-1: oklch(0.78 0.085 85);
+  --chart-2: oklch(0.62 0.05 240);
+  --chart-3: oklch(0.68 0.07 60);
+  --chart-4: oklch(0.66 0.05 320);
+  --chart-5: oklch(0.7 0.05 160);
+  --sidebar: oklch(0.165 0.006 60);
+  --sidebar-foreground: oklch(0.94 0.01 80);
+  --sidebar-primary: oklch(0.78 0.085 85);
+  --sidebar-primary-foreground: oklch(0.2 0.03 80);
+  --sidebar-accent: oklch(0.24 0.008 60);
+  --sidebar-accent-foreground: oklch(0.94 0.01 80);
+  --sidebar-border: oklch(0.9 0.02 80 / 9%);
+  --sidebar-ring: oklch(0.78 0.085 85);
+  /* Kategorien: gedeckt, unterscheidbar, kein Neon */
+  --cat-strength: oklch(0.72 0.08 60);
+  --cat-run: oklch(0.7 0.06 240);
+  --cat-dynamic: oklch(0.72 0.07 150);
+  --cat-mobility: oklch(0.7 0.06 320);
   --gradient-hero: linear-gradient(
-    135deg,
-    oklch(0.82 0.18 145 / 0.25),
-    oklch(0.72 0.18 220 / 0.15)
+    160deg,
+    oklch(0.78 0.085 85 / 0.12),
+    oklch(0.3 0.03 70 / 0.08) 55%,
+    transparent
   );
-  --shadow-glow: 0 10px 40px -10px oklch(0.82 0.18 145 / 0.4);
+  --shadow-glow: 0 12px 44px -14px oklch(0.78 0.085 85 / 0.3);
 }
 
 @layer base {
@@ -117,6 +121,8 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    /* Serife braucht kein negatives Tracking und etwas mehr Gewicht */
+    letter-spacing: 0;
+    font-weight: 600;
   }
 }

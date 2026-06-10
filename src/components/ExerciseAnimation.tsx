@@ -24,6 +24,8 @@ export function ExerciseAnimation({
   const start = useRef<number>(0);
 
   useEffect(() => {
+    // Bewegung respektiert die Systemeinstellung — sonst statische Grundpose
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     start.current = performance.now();
     const tick = (now: number) => {
       // rAF timestamps can be slightly earlier than performance.now() from the

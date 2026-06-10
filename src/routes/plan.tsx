@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ChevronRight, CheckCircle2, Circle } from "lucide-react";
+import { ChevronRight, CheckCircle2, Circle, Clock, Flame } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { CategoryBadge } from "@/components/CategoryBadge";
 import { weeklyPlan, weekdaysLong, getWorkout } from "@/data/workouts";
@@ -58,8 +58,12 @@ function Plan() {
                   <h3 className="mt-1 truncate font-display text-lg font-bold">{w.title}</h3>
                   <div className="mt-1 flex flex-wrap gap-2">
                     <CategoryBadge category={w.category} />
-                    <span className="text-xs text-muted-foreground">⏱ {w.duration}</span>
-                    <span className="text-xs text-muted-foreground">🔥 {w.intensity}</span>
+                    <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                      <Clock className="h-3 w-3" /> {w.duration}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                      <Flame className="h-3 w-3" /> {w.intensity}
+                    </span>
                   </div>
                   <p className="mt-2 text-sm text-muted-foreground">{w.goal}</p>
                 </div>

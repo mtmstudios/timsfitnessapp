@@ -31,7 +31,7 @@ export function RestTimer({ seconds = 90 }: { seconds?: number }) {
 
   return (
     <div className="flex items-center gap-3 rounded-xl border border-border bg-card p-3">
-      <div className="font-display text-2xl font-bold tabular-nums">
+      <div className="text-2xl font-semibold tabular-nums">
         {mm}:{ss}
       </div>
       <button
@@ -102,9 +102,9 @@ export function IntervalTimer({ phases }: { phases: { label: string; seconds: nu
     <div className="space-y-4 rounded-2xl border border-border bg-card p-6">
       <div className="text-center">
         <div className="text-sm uppercase tracking-widest text-muted-foreground">
-          {finished ? "Fertig — stark! 💪" : phase?.label}
+          {finished ? "Fertig — stark gelaufen" : phase?.label}
         </div>
-        <div className="font-display text-6xl font-bold tabular-nums mt-2">
+        <div className="mt-2 text-6xl font-medium tabular-nums">
           {mm}:{ss}
         </div>
       </div>
