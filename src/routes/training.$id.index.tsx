@@ -6,7 +6,7 @@ import { ExerciseAnimation } from "@/components/ExerciseAnimation";
 import { getWorkout } from "@/data/workouts";
 import { getExercise } from "@/data/exercises";
 
-export const Route = createFileRoute("/training/$id")({
+export const Route = createFileRoute("/training/$id/")({
   head: ({ params }) => ({ meta: [{ title: `${getWorkout(params.id)?.title ?? "Training"} — Atlas` }] }),
   component: TrainingDetail,
   notFoundComponent: () => (
