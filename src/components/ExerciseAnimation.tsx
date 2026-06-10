@@ -256,191 +256,161 @@ interface Pose {
   footR: { x: number; y: number };
 }
 
+const STAND: Pose = {
+  head: { x: 100, y: 50 },
+  shoulder: { x: 100, y: 75 },
+  hip: { x: 100, y: 120 },
+  elbowL: { x: 80, y: 100 }, elbowR: { x: 120, y: 100 },
+  handL: { x: 75, y: 125 }, handR: { x: 125, y: 125 },
+  kneeL: { x: 88, y: 150 }, kneeR: { x: 112, y: 150 },
+  footL: { x: 85, y: 180 }, footR: { x: 115, y: 180 },
+};
+
 function getPoses(type: AnimationType): Pose[] {
-  const stand: Pose = {
-    head: { x: 100, y: 50 },
-    shoulder: { x: 100, y: 75 },
-    hip: { x: 100, y: 120 },
-    elbowL: { x: 80, y: 100 }, elbowR: { x: 120, y: 100 },
-    handL: { x: 75, y: 125 }, handR: { x: 125, y: 125 },
-    kneeL: { x: 88, y: 150 }, kneeR: { x: 112, y: 150 },
-    footL: { x: 85, y: 180 }, footR: { x: 115, y: 180 },
-  };
+  const s = STAND;
   switch (type) {
     case "squat":
-      return [stand, squatBottom(stand), stand];
-    case "jump":
-      return [
-        jumpCrouch(stand),
-        jumpAir(stand),
-        jumpCrouch(stand),
-      ];
-    case "run":
-      return [runA(stand), runMid(stand), runB(stand), runMid(stand)];
-    default:
-      break;
-  }
-
-  switch (type) {
-    case "squat":
-      return [stand, squatBottom(stand)];
-    case "pushup":
-      return pushupPoses();
-    case "hinge":
-      return [stand, {
-        ...stand, head: { x: 70, y: 80 }, shoulder: { x: 80, y: 95 }, hip: { x: 110, y: 115 },
-        elbowL: { x: 85, y: 125 }, elbowR: { x: 95, y: 125 },
-        handL: { x: 85, y: 150 }, handR: { x: 95, y: 150 },
-      }];
-    default:
-      return [stand, stand];
-  }
-}
-
-function squatBottom(stand: Pose): Pose {
-  return {
-        ...stand, head: { x: 100, y: 75 }, shoulder: { x: 100, y: 100 }, hip: { x: 100, y: 140 },
+      return [s, {
+        ...s, head: { x: 100, y: 75 }, shoulder: { x: 100, y: 100 }, hip: { x: 100, y: 140 },
         elbowL: { x: 78, y: 115 }, elbowR: { x: 122, y: 115 },
         handL: { x: 70, y: 100 }, handR: { x: 130, y: 100 },
-        kneeL: { x: 78, y: 155 }, kneeR: { x: 122, y: 155 },
-  };
-}
-
-function jumpCrouch(stand: Pose): Pose {
-  return { ...stand, head: { x: 100, y: 75 }, shoulder: { x: 100, y: 100 }, hip: { x: 100, y: 140 }, kneeL: { x: 80, y: 158 }, kneeR: { x: 120, y: 158 }, handL: { x: 70, y: 130 }, handR: { x: 130, y: 130 } };
-}
-function jumpAir(stand: Pose): Pose {
-  return { ...stand, head: { x: 100, y: 25 }, shoulder: { x: 100, y: 50 }, hip: { x: 100, y: 95 }, kneeL: { x: 90, y: 125 }, kneeR: { x: 110, y: 125 }, footL: { x: 85, y: 150 }, footR: { x: 115, y: 150 }, handL: { x: 70, y: 30 }, handR: { x: 130, y: 30 }, elbowL: { x: 78, y: 55 }, elbowR: { x: 122, y: 55 } };
-}
-
-function runA(stand: Pose): Pose {
-  return {
-    ...stand,
-    head: { x: 100, y: 48 }, shoulder: { x: 100, y: 73 }, hip: { x: 100, y: 118 },
-    elbowL: { x: 75, y: 95 }, elbowR: { x: 125, y: 105 },
-    handL: { x: 68, y: 70 }, handR: { x: 132, y: 132 },
-    kneeL: { x: 88, y: 140 }, kneeR: { x: 118, y: 158 },
-    footL: { x: 75, y: 162 }, footR: { x: 128, y: 182 },
-  };
-}
-function runB(stand: Pose): Pose {
-  return {
-    ...stand,
-    head: { x: 100, y: 48 }, shoulder: { x: 100, y: 73 }, hip: { x: 100, y: 118 },
-    elbowL: { x: 75, y: 105 }, elbowR: { x: 125, y: 95 },
-    handL: { x: 68, y: 132 }, handR: { x: 132, y: 70 },
-    kneeL: { x: 88, y: 158 }, kneeR: { x: 118, y: 140 },
-    footL: { x: 75, y: 182 }, footR: { x: 128, y: 162 },
-  };
-}
-function runMid(stand: Pose): Pose {
-  return {
-    ...stand,
-    head: { x: 100, y: 45 }, shoulder: { x: 100, y: 70 }, hip: { x: 100, y: 115 },
-    elbowL: { x: 78, y: 100 }, elbowR: { x: 122, y: 100 },
-    handL: { x: 80, y: 110 }, handR: { x: 120, y: 110 },
-    kneeL: { x: 95, y: 148 }, kneeR: { x: 105, y: 148 },
-    footL: { x: 92, y: 175 }, footR: { x: 108, y: 175 },
-  };
-}
-
-function pushupPoses(): Pose[] {
-  return [{
-        head: { x: 50, y: 100 }, shoulder: { x: 65, y: 110 }, hip: { x: 120, y: 115 },
-        elbowL: { x: 70, y: 130 }, elbowR: { x: 70, y: 130 },
-        handL: { x: 80, y: 150 }, handR: { x: 80, y: 150 },
-        kneeL: { x: 150, y: 130 }, kneeR: { x: 150, y: 130 },
-        footL: { x: 175, y: 145 }, footR: { x: 175, y: 145 },
-      }, {
-        head: { x: 50, y: 130 }, shoulder: { x: 65, y: 135 }, hip: { x: 120, y: 130 },
-        elbowL: { x: 75, y: 150 }, elbowR: { x: 75, y: 150 },
-        handL: { x: 80, y: 155 }, handR: { x: 80, y: 155 },
-        kneeL: { x: 150, y: 140 }, kneeR: { x: 150, y: 140 },
-        footL: { x: 175, y: 150 }, footR: { x: 175, y: 150 },
+        kneeL: { x: 78, y: 158 }, kneeR: { x: 122, y: 158 },
       }];
-}
-
-function _unusedKeepOriginalSwitch(stand: Pose, type: AnimationType): Pose[] {
-  switch (type) {
+    case "jump":
+      return [
+        { ...s, head: { x: 100, y: 78 }, shoulder: { x: 100, y: 103 }, hip: { x: 100, y: 143 },
+          elbowL: { x: 78, y: 118 }, elbowR: { x: 122, y: 118 },
+          handL: { x: 70, y: 138 }, handR: { x: 130, y: 138 },
+          kneeL: { x: 80, y: 160 }, kneeR: { x: 120, y: 160 } },
+        { ...s, head: { x: 100, y: 22 }, shoulder: { x: 100, y: 47 }, hip: { x: 100, y: 92 },
+          elbowL: { x: 78, y: 50 }, elbowR: { x: 122, y: 50 },
+          handL: { x: 70, y: 22 }, handR: { x: 130, y: 22 },
+          kneeL: { x: 90, y: 122 }, kneeR: { x: 110, y: 122 },
+          footL: { x: 85, y: 148 }, footR: { x: 115, y: 148 } },
+        { ...s, head: { x: 100, y: 60 }, shoulder: { x: 100, y: 85 }, hip: { x: 100, y: 128 },
+          elbowL: { x: 78, y: 108 }, elbowR: { x: 122, y: 108 },
+          handL: { x: 70, y: 120 }, handR: { x: 130, y: 120 } },
+      ];
+    case "pushup":
+      return [{
+        head: { x: 45, y: 100 }, shoulder: { x: 62, y: 108 }, hip: { x: 125, y: 115 },
+        elbowL: { x: 70, y: 132 }, elbowR: { x: 70, y: 132 },
+        handL: { x: 80, y: 152 }, handR: { x: 80, y: 152 },
+        kneeL: { x: 155, y: 128 }, kneeR: { x: 155, y: 128 },
+        footL: { x: 182, y: 142 }, footR: { x: 182, y: 142 },
+      }, {
+        head: { x: 45, y: 135 }, shoulder: { x: 62, y: 138 }, hip: { x: 125, y: 132 },
+        elbowL: { x: 80, y: 148 }, elbowR: { x: 80, y: 148 },
+        handL: { x: 80, y: 152 }, handR: { x: 80, y: 152 },
+        kneeL: { x: 155, y: 140 }, kneeR: { x: 155, y: 140 },
+        footL: { x: 182, y: 150 }, footR: { x: 182, y: 150 },
+      }];
+    case "hinge":
+      return [s, {
+        ...s, head: { x: 78, y: 80 }, shoulder: { x: 85, y: 95 }, hip: { x: 110, y: 118 },
+        elbowL: { x: 82, y: 125 }, elbowR: { x: 92, y: 125 },
+        handL: { x: 80, y: 152 }, handR: { x: 95, y: 152 },
+      }];
     case "row":
       return [{
-        ...stand, head: { x: 80, y: 70 }, shoulder: { x: 90, y: 90 }, hip: { x: 110, y: 115 },
-        elbowL: { x: 80, y: 110 }, elbowR: { x: 100, y: 110 },
-        handL: { x: 70, y: 130 }, handR: { x: 90, y: 130 },
+        ...s, head: { x: 85, y: 70 }, shoulder: { x: 92, y: 92 }, hip: { x: 112, y: 118 },
+        elbowL: { x: 82, y: 110 }, elbowR: { x: 102, y: 110 },
+        handL: { x: 72, y: 130 }, handR: { x: 92, y: 130 },
       }, {
-        ...stand, head: { x: 80, y: 70 }, shoulder: { x: 90, y: 90 }, hip: { x: 110, y: 115 },
-        elbowL: { x: 110, y: 85 }, elbowR: { x: 130, y: 85 },
-        handL: { x: 130, y: 95 }, handR: { x: 150, y: 95 },
+        ...s, head: { x: 85, y: 70 }, shoulder: { x: 92, y: 92 }, hip: { x: 112, y: 118 },
+        elbowL: { x: 115, y: 88 }, elbowR: { x: 135, y: 88 },
+        handL: { x: 70, y: 100 }, handR: { x: 90, y: 100 },
       }];
     case "press":
       return [{
-        ...stand,
-        elbowL: { x: 75, y: 90 }, elbowR: { x: 125, y: 90 },
-        handL: { x: 75, y: 70 }, handR: { x: 125, y: 70 },
+        ...s,
+        elbowL: { x: 78, y: 92 }, elbowR: { x: 122, y: 92 },
+        handL: { x: 78, y: 72 }, handR: { x: 122, y: 72 },
       }, {
-        ...stand,
-        elbowL: { x: 80, y: 55 }, elbowR: { x: 120, y: 55 },
-        handL: { x: 80, y: 25 }, handR: { x: 120, y: 25 },
+        ...s,
+        elbowL: { x: 82, y: 55 }, elbowR: { x: 118, y: 55 },
+        handL: { x: 82, y: 22 }, handR: { x: 118, y: 22 },
       }];
     case "pull":
       return [{
-        ...stand, head: { x: 100, y: 60 },
-        elbowL: { x: 70, y: 50 }, elbowR: { x: 130, y: 50 },
-        handL: { x: 65, y: 25 }, handR: { x: 135, y: 25 },
+        ...s, head: { x: 100, y: 65 },
+        elbowL: { x: 72, y: 55 }, elbowR: { x: 128, y: 55 },
+        handL: { x: 68, y: 22 }, handR: { x: 132, y: 22 },
       }, {
-        ...stand, head: { x: 100, y: 40 },
-        elbowL: { x: 70, y: 65 }, elbowR: { x: 130, y: 65 },
-        handL: { x: 65, y: 25 }, handR: { x: 135, y: 25 },
+        ...s, head: { x: 100, y: 38 }, shoulder: { x: 100, y: 60 },
+        elbowL: { x: 72, y: 50 }, elbowR: { x: 128, y: 50 },
+        handL: { x: 68, y: 22 }, handR: { x: 132, y: 22 },
       }];
     case "lunge":
-      return [stand, {
-        ...stand, head: { x: 100, y: 75 }, shoulder: { x: 100, y: 100 }, hip: { x: 100, y: 135 },
-        kneeL: { x: 75, y: 165 }, kneeR: { x: 130, y: 155 },
-        footL: { x: 70, y: 180 }, footR: { x: 145, y: 180 },
+      return [s, {
+        ...s, head: { x: 100, y: 72 }, shoulder: { x: 100, y: 97 }, hip: { x: 100, y: 135 },
+        elbowL: { x: 78, y: 115 }, elbowR: { x: 122, y: 115 },
+        handL: { x: 75, y: 135 }, handR: { x: 125, y: 135 },
+        kneeL: { x: 72, y: 168 }, kneeR: { x: 135, y: 155 },
+        footL: { x: 68, y: 182 }, footR: { x: 152, y: 182 },
       }];
     case "plank":
       return [{
-        head: { x: 50, y: 110 }, shoulder: { x: 65, y: 115 }, hip: { x: 125, y: 120 },
+        head: { x: 45, y: 108 }, shoulder: { x: 62, y: 113 }, hip: { x: 128, y: 118 },
         elbowL: { x: 65, y: 140 }, elbowR: { x: 65, y: 140 },
-        handL: { x: 80, y: 150 }, handR: { x: 80, y: 150 },
-        kneeL: { x: 155, y: 130 }, kneeR: { x: 155, y: 130 },
-        footL: { x: 180, y: 150 }, footR: { x: 180, y: 150 },
+        handL: { x: 80, y: 152 }, handR: { x: 80, y: 152 },
+        kneeL: { x: 158, y: 128 }, kneeR: { x: 158, y: 128 },
+        footL: { x: 185, y: 150 }, footR: { x: 185, y: 150 },
       }, {
-        head: { x: 50, y: 108 }, shoulder: { x: 65, y: 113 }, hip: { x: 125, y: 118 },
+        head: { x: 45, y: 105 }, shoulder: { x: 62, y: 110 }, hip: { x: 128, y: 115 },
         elbowL: { x: 65, y: 138 }, elbowR: { x: 65, y: 138 },
-        handL: { x: 80, y: 148 }, handR: { x: 80, y: 148 },
-        kneeL: { x: 155, y: 128 }, kneeR: { x: 155, y: 128 },
-        footL: { x: 180, y: 148 }, footR: { x: 180, y: 148 },
+        handL: { x: 80, y: 150 }, handR: { x: 80, y: 150 },
+        kneeL: { x: 158, y: 125 }, kneeR: { x: 158, y: 125 },
+        footL: { x: 185, y: 148 }, footR: { x: 185, y: 148 },
       }];
     case "run":
-      return [{
-        ...stand,
-        elbowL: { x: 75, y: 95 }, elbowR: { x: 125, y: 105 },
-        handL: { x: 70, y: 75 }, handR: { x: 130, y: 130 },
-        kneeL: { x: 90, y: 140 }, kneeR: { x: 115, y: 155 },
-        footL: { x: 80, y: 165 }, footR: { x: 125, y: 180 },
-      }, {
-        ...stand,
-        elbowL: { x: 75, y: 105 }, elbowR: { x: 125, y: 95 },
-        handL: { x: 70, y: 130 }, handR: { x: 130, y: 75 },
-        kneeL: { x: 90, y: 155 }, kneeR: { x: 115, y: 140 },
-        footL: { x: 80, y: 180 }, footR: { x: 125, y: 165 },
-      }];
+      return [
+        { ...s, head: { x: 100, y: 46 }, shoulder: { x: 100, y: 70 }, hip: { x: 100, y: 118 },
+          elbowL: { x: 75, y: 92 }, elbowR: { x: 125, y: 108 },
+          handL: { x: 68, y: 68 }, handR: { x: 132, y: 135 },
+          kneeL: { x: 88, y: 145 }, kneeR: { x: 120, y: 152 },
+          footL: { x: 78, y: 178 }, footR: { x: 138, y: 168 } },
+        { ...s, head: { x: 100, y: 40 }, shoulder: { x: 100, y: 64 }, hip: { x: 100, y: 112 },
+          elbowL: { x: 78, y: 98 }, elbowR: { x: 122, y: 98 },
+          handL: { x: 78, y: 108 }, handR: { x: 122, y: 108 },
+          kneeL: { x: 92, y: 142 }, kneeR: { x: 108, y: 142 },
+          footL: { x: 88, y: 168 }, footR: { x: 112, y: 168 } },
+        { ...s, head: { x: 100, y: 46 }, shoulder: { x: 100, y: 70 }, hip: { x: 100, y: 118 },
+          elbowL: { x: 75, y: 108 }, elbowR: { x: 125, y: 92 },
+          handL: { x: 68, y: 135 }, handR: { x: 132, y: 68 },
+          kneeL: { x: 80, y: 152 }, kneeR: { x: 112, y: 145 },
+          footL: { x: 62, y: 168 }, footR: { x: 122, y: 178 } },
+        { ...s, head: { x: 100, y: 40 }, shoulder: { x: 100, y: 64 }, hip: { x: 100, y: 112 },
+          elbowL: { x: 78, y: 98 }, elbowR: { x: 122, y: 98 },
+          handL: { x: 78, y: 108 }, handR: { x: 122, y: 108 },
+          kneeL: { x: 92, y: 142 }, kneeR: { x: 108, y: 142 },
+          footL: { x: 88, y: 168 }, footR: { x: 112, y: 168 } },
+      ];
     case "stretch":
-      return [stand, {
-        ...stand, head: { x: 105, y: 55 }, shoulder: { x: 105, y: 80 },
-        elbowL: { x: 85, y: 60 }, elbowR: { x: 130, y: 105 },
-        handL: { x: 80, y: 30 }, handR: { x: 150, y: 125 },
-        kneeL: { x: 75, y: 155 }, kneeR: { x: 125, y: 150 },
-        footL: { x: 60, y: 180 }, footR: { x: 135, y: 180 },
-      }];
+      return [s, {
+        ...s, head: { x: 108, y: 55 }, shoulder: { x: 105, y: 80 },
+        elbowL: { x: 82, y: 60 }, elbowR: { x: 132, y: 105 },
+        handL: { x: 78, y: 28 }, handR: { x: 152, y: 128 },
+        kneeL: { x: 72, y: 155 }, kneeR: { x: 128, y: 150 },
+        footL: { x: 58, y: 182 }, footR: { x: 138, y: 182 },
+      }, s];
     case "rotation":
-      return [{ ...stand, handL: { x: 60, y: 110 }, handR: { x: 140, y: 110 }, elbowL: { x: 75, y: 105 }, elbowR: { x: 125, y: 105 } },
-        { ...stand, handL: { x: 60, y: 90 }, handR: { x: 140, y: 130 }, elbowL: { x: 80, y: 90 }, elbowR: { x: 120, y: 120 } }];
+      return [
+        { ...s, handL: { x: 55, y: 115 }, handR: { x: 145, y: 110 }, elbowL: { x: 72, y: 108 }, elbowR: { x: 128, y: 105 } },
+        { ...s, handL: { x: 100, y: 85 }, handR: { x: 100, y: 130 }, elbowL: { x: 95, y: 95 }, elbowR: { x: 105, y: 120 } },
+        { ...s, handL: { x: 145, y: 115 }, handR: { x: 55, y: 110 }, elbowL: { x: 128, y: 108 }, elbowR: { x: 72, y: 105 } },
+        { ...s, handL: { x: 100, y: 85 }, handR: { x: 100, y: 130 }, elbowL: { x: 95, y: 95 }, elbowR: { x: 105, y: 120 } },
+      ];
     case "carry":
-      return [{ ...stand, handL: { x: 75, y: 140 }, handR: { x: 125, y: 140 } },
-        { ...stand, head: { x: 102, y: 50 }, handL: { x: 75, y: 142 }, handR: { x: 125, y: 138 }, footL: { x: 88, y: 180 }, footR: { x: 118, y: 178 } }];
+      return [
+        { ...s, handL: { x: 75, y: 142 }, handR: { x: 125, y: 142 } },
+        { ...s, head: { x: 100, y: 48 }, shoulder: { x: 100, y: 73 }, hip: { x: 100, y: 118 },
+          handL: { x: 75, y: 140 }, handR: { x: 125, y: 144 },
+          footL: { x: 90, y: 178 }, footR: { x: 118, y: 182 } },
+        { ...s, handL: { x: 75, y: 144 }, handR: { x: 125, y: 140 },
+          footL: { x: 80, y: 182 }, footR: { x: 120, y: 178 } },
+      ];
     default:
-      return [stand, stand];
+      return [s, s];
   }
 }
