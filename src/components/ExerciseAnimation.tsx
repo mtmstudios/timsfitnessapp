@@ -256,7 +256,7 @@ interface Pose {
   footR: { x: number; y: number };
 }
 
-function getPoses(type: AnimationType): [Pose, Pose] {
+function getPoses(type: AnimationType): Pose[] {
   const stand: Pose = {
     head: { x: 100, y: 50 },
     shoulder: { x: 100, y: 75 },
@@ -268,17 +268,84 @@ function getPoses(type: AnimationType): [Pose, Pose] {
   };
   switch (type) {
     case "squat":
+      return [stand, squatBottom(stand), stand];
+    case "jump":
+      return [
+        jumpCrouch(stand),
+        jumpAir(stand),
+        jumpCrouch(stand),
+      ];
+    case "run":
+      return [runA(stand), runMid(stand), runB(stand), runMid(stand)];
+    default:
+      break;
+  }
+
+  switch (type) {
+    case "squat":
+      return [stand, squatBottom(stand)];
+    case "pushup":
+      return pushupPoses();
+    case "hinge":
       return [stand, {
+        ...stand, head: { x: 70, y: 80 }, shoulder: { x: 80, y: 95 }, hip: { x: 110, y: 115 },
+        elbowL: { x: 85, y: 125 }, elbowR: { x: 95, y: 125 },
+        handL: { x: 85, y: 150 }, handR: { x: 95, y: 150 },
+      }];
+    default:
+      return [stand, stand];
+  }
+}
+
+function squatBottom(stand: Pose): Pose {
+  return {
         ...stand, head: { x: 100, y: 75 }, shoulder: { x: 100, y: 100 }, hip: { x: 100, y: 140 },
         elbowL: { x: 78, y: 115 }, elbowR: { x: 122, y: 115 },
         handL: { x: 70, y: 100 }, handR: { x: 130, y: 100 },
         kneeL: { x: 78, y: 155 }, kneeR: { x: 122, y: 155 },
-      }];
-    case "jump":
-      return [{ ...stand, head: { x: 100, y: 75 }, shoulder: { x: 100, y: 100 }, hip: { x: 100, y: 140 }, kneeL: { x: 80, y: 158 }, kneeR: { x: 120, y: 158 }, handL: { x: 70, y: 130 }, handR: { x: 130, y: 130 } },
-        { ...stand, head: { x: 100, y: 30 }, shoulder: { x: 100, y: 55 }, hip: { x: 100, y: 100 }, kneeL: { x: 90, y: 130 }, kneeR: { x: 110, y: 130 }, footL: { x: 85, y: 155 }, footR: { x: 115, y: 155 }, handL: { x: 70, y: 40 }, handR: { x: 130, y: 40 } }];
-    case "pushup":
-      return [{
+  };
+}
+
+function jumpCrouch(stand: Pose): Pose {
+  return { ...stand, head: { x: 100, y: 75 }, shoulder: { x: 100, y: 100 }, hip: { x: 100, y: 140 }, kneeL: { x: 80, y: 158 }, kneeR: { x: 120, y: 158 }, handL: { x: 70, y: 130 }, handR: { x: 130, y: 130 } };
+}
+function jumpAir(stand: Pose): Pose {
+  return { ...stand, head: { x: 100, y: 25 }, shoulder: { x: 100, y: 50 }, hip: { x: 100, y: 95 }, kneeL: { x: 90, y: 125 }, kneeR: { x: 110, y: 125 }, footL: { x: 85, y: 150 }, footR: { x: 115, y: 150 }, handL: { x: 70, y: 30 }, handR: { x: 130, y: 30 }, elbowL: { x: 78, y: 55 }, elbowR: { x: 122, y: 55 } };
+}
+
+function runA(stand: Pose): Pose {
+  return {
+    ...stand,
+    head: { x: 100, y: 48 }, shoulder: { x: 100, y: 73 }, hip: { x: 100, y: 118 },
+    elbowL: { x: 75, y: 95 }, elbowR: { x: 125, y: 105 },
+    handL: { x: 68, y: 70 }, handR: { x: 132, y: 132 },
+    kneeL: { x: 88, y: 140 }, kneeR: { x: 118, y: 158 },
+    footL: { x: 75, y: 162 }, footR: { x: 128, y: 182 },
+  };
+}
+function runB(stand: Pose): Pose {
+  return {
+    ...stand,
+    head: { x: 100, y: 48 }, shoulder: { x: 100, y: 73 }, hip: { x: 100, y: 118 },
+    elbowL: { x: 75, y: 105 }, elbowR: { x: 125, y: 95 },
+    handL: { x: 68, y: 132 }, handR: { x: 132, y: 70 },
+    kneeL: { x: 88, y: 158 }, kneeR: { x: 118, y: 140 },
+    footL: { x: 75, y: 182 }, footR: { x: 128, y: 162 },
+  };
+}
+function runMid(stand: Pose): Pose {
+  return {
+    ...stand,
+    head: { x: 100, y: 45 }, shoulder: { x: 100, y: 70 }, hip: { x: 100, y: 115 },
+    elbowL: { x: 78, y: 100 }, elbowR: { x: 122, y: 100 },
+    handL: { x: 80, y: 110 }, handR: { x: 120, y: 110 },
+    kneeL: { x: 95, y: 148 }, kneeR: { x: 105, y: 148 },
+    footL: { x: 92, y: 175 }, footR: { x: 108, y: 175 },
+  };
+}
+
+function pushupPoses(): Pose[] {
+  return [{
         head: { x: 50, y: 100 }, shoulder: { x: 65, y: 110 }, hip: { x: 120, y: 115 },
         elbowL: { x: 70, y: 130 }, elbowR: { x: 70, y: 130 },
         handL: { x: 80, y: 150 }, handR: { x: 80, y: 150 },
@@ -291,12 +358,10 @@ function getPoses(type: AnimationType): [Pose, Pose] {
         kneeL: { x: 150, y: 140 }, kneeR: { x: 150, y: 140 },
         footL: { x: 175, y: 150 }, footR: { x: 175, y: 150 },
       }];
-    case "hinge":
-      return [stand, {
-        ...stand, head: { x: 70, y: 80 }, shoulder: { x: 80, y: 95 }, hip: { x: 110, y: 115 },
-        elbowL: { x: 85, y: 125 }, elbowR: { x: 95, y: 125 },
-        handL: { x: 85, y: 150 }, handR: { x: 95, y: 150 },
-      }];
+}
+
+function _unusedKeepOriginalSwitch(stand: Pose, type: AnimationType): Pose[] {
+  switch (type) {
     case "row":
       return [{
         ...stand, head: { x: 80, y: 70 }, shoulder: { x: 90, y: 90 }, hip: { x: 110, y: 115 },
