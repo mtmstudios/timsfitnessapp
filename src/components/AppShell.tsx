@@ -2,13 +2,13 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { Home, Calendar, Dumbbell, BarChart3, BookOpen } from "lucide-react";
 import type { ReactNode } from "react";
 
-const tabs = [
+const tabs: { to: string; label: string; icon: typeof Home; exact?: boolean }[] = [
   { to: "/", label: "Home", icon: Home, exact: true },
   { to: "/plan", label: "Plan", icon: Calendar },
   { to: "/exercises", label: "Übungen", icon: BookOpen },
   { to: "/progress", label: "Fortschritt", icon: BarChart3 },
   { to: "/mobility", label: "Mobility", icon: Dumbbell },
-] as const;
+];
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
