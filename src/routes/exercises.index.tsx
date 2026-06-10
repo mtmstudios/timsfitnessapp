@@ -6,7 +6,7 @@ import { CategoryBadge } from "@/components/CategoryBadge";
 import { ExerciseAnimation } from "@/components/ExerciseAnimation";
 import { exercises, categoryLabels, type ExerciseCategory } from "@/data/exercises";
 
-export const Route = createFileRoute("/exercises")({
+export const Route = createFileRoute("/exercises/")({
   head: () => ({ meta: [{ title: "Übungsbibliothek — Atlas" }] }),
   component: Lib,
 });
